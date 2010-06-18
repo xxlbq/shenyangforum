@@ -1,2 +1,12 @@
 id :Admin
 pwd:shenyangmaster
+
+
+
+select version();
+ version()        
+ ---------------- 
+ 5.1.48-community 
+ 
+ 
+windows 下 mysql 默认为 lowercase ，注意设置
