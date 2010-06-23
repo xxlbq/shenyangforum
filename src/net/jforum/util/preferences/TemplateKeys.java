@@ -206,4 +206,15 @@ public class TemplateKeys
 	public static final String AJAX_IS_POST_INDEXED = "ajax.is.post.indexed";
 	public static final String AJAX_TEST_MAIL = "ajax.test.mail";
 	public static final String AJAX_LOAD_POST = "ajax.load.post";
+	
+	
+	
+	//******
+	//addon
+	//******
+	public static final String FORUMS_SERVICE = "forums.service";
+	public static final String FORUMS_ABLUTUS = "forums.aboutus";
+	public static final String FORUMS_CONTACTUS = "forums.contactus";
+	public static final String FORUMS_FRIEND_LINKS = "forums.friend_links";
+	
 }
