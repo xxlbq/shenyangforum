@@ -355,4 +355,45 @@ public class ForumAction extends Command
 			this.setTemplateName(ViewCommon.contextToLogin());
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * 广告服务
+	 */
+	public void service(){
+		this.setTemplateName(TemplateKeys.FORUMS_SERVICE);
+	}
+	
+	/**
+	 * 关于我们 
+	 */
+	
+	public void aboutus(){
+		this.setTemplateName(TemplateKeys.FORUMS_ABLUTUS);
+	}
+	
+	/**
+	 * 联系我们
+	 */
+	public void contactus(){
+		this.setTemplateName(TemplateKeys.FORUMS_CONTACTUS);
+	}
+	
+	/**
+	 * 友情链接
+	 */
+	public void friend_links(){
+		this.setTemplateName(TemplateKeys.FORUMS_FRIEND_LINKS);
+	}
+	
+	
+	
 }
