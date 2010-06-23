@@ -1,0 +1,28 @@
+jforum里对权限分得很细，大体有一下几种：
+
+Jforum 权限对应表
+
+perm_administration$single 是否为越级管理员
+perm_category 限制的分类
+perm_forum 限制的版块
+perm_anonymous_post 禁止匿名用户发帖
+perm_reply_only 禁止发主体帖,允许回复帖子
+perm_create_sticky_announcement_topics$single 允许将主题设置为公告或置顶主题
+perm_create_poll$single 可发起投票帖
+perm_vote$single 允许投票
+perm_read_only_forums 只读版块.选择允许所有表示禁止标签，也就是可回复。
+perm_reply_without_moderation 选择 '允许全部'将不限制对所有版块的回复,选中指定的版块代表不允许在选择的版本中回复信息.
+perm_html_disabled 选中的版块代表不允许使用HTML标签 .选择‘允许所有’代表允许所有版面使用HTML标签
+perm_karma_enabled$single 使用文章评分
+perm_bookmarks_enabled$single 允许使用书签
+perm_attachments_enabled 是否允许使用附件,选择'允许全部'代表可以使用,选择指定版块代表不允许在选中的版块中使用附件
+perm_attachments_download 允许下载附件
+perm_moderation_log$single 可以查阅管理活动日志
+perm_full_moderation_log$single 可以查阅完整的管理活动日志
+perm_moderation$single 是否允许设置为版主
+perm_moderation_approve_messages$single 是否在允许的版块里审核/封锁贴子
+perm_moderation_forums 不能修改的论坛
+perm_moderation_post_remove$single 删除贴子
+perm_moderation_post_edit$single 修改贴子
+perm_moderation_topic_move$single 移动贴子
+perm_moderation_topic_lockUnlock$single 锁定和解锁主题 
