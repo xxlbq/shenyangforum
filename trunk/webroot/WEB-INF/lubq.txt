@@ -17,3 +17,29 @@ init 方法在首次访问时被调用
 			加载模板引擎
 			加载 module mappings for the system.
 			加载 url patterns.
+
+			
+			
+			
+			
+			
+--  版面			
+SELECT * FROM  jforum_categories ;
+
+
+---  firefox 运行时报错  (IE 没问题)
+
+
+
+======================
+在FireFox地址栏输入about:config(必须是英文输入法)
+
+
+Download and cache only pages you actually view
+
+Firefox has an interesting feature whereby it tries to determine which links on a page you might click on and then downloads them so that it can load the pages faster. For example, it will try to download the top result from a Google search automatically. However, this eats up bandwidth and CPU cycles and saves web history of pages you may have never even visited! To turn it off, set the value to false.
+
+network.prefetch-next：false
+
+True - Default value, set it to False
+
