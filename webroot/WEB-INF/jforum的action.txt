@@ -1,0 +1,74 @@
+JForum展示层介绍
+JForum论坛没有使用主流的MVC框架，而是自己实现了一套简单的MVC框架。
+
+JForum的MVC框架和现在流行的Struts2一样，使用了与web容器松耦合的设计，并没有直接为用户暴露 HttpServletRequest和HttpServletResponse接口，而是提供了 net.jforum.context.RequestContext和net.jforum.context.ResponseContext这两个接口，与Struts2不同的是JForum的action还是需要继承net.jforum.Command这个对象，并非一个简单的POJO。
+
+JForum页面显示并没有使用JSP，而是使用freemarker的模板，框架本身与freemarker耦合在了一起，并非像 Struts2可以灵活的替换显示方式。
+
+基本开发流程
+开发JForum的Action非常简单，首先我们要从几个方面入手。
+
+1.建立action
+新建一个类继承与net.jforum.Command
+
+2.注册action
+到JForum的WEB-INF/config目录找到modulesMapping.properties，在里面配置一个模块名称和对应的类
+如：test=net.jforum.view.test.TestAction
+
+3.注册模板
+到JForum的WEB-INF/config目录找到templatesMapping.properties
+在里面配置一个模板名称对应一个具体的显示页面(页面默认都要放在templates/default目录下)
+如：test.show= test_show.htm
+修改net.jforum.util.preferences.TemplateKeys类
+在里面配置常量
+如：
+public static final String TEST_SHOW = "test.show";
+
+4.新建方法
+Java 代码
+
+
+private void show()
+	{
+//选择显示模板
+		this.setTemplateName(TemplateKeys.TEST_SHOW);
+
+//组装模板变量
+		this.context.put("title", request.getParameter("title"););
+		this.context.put("description", request.getParameter("description"););
+	}
+
+
+
+5.配置参数映射
+到JForum的WEB-INF/config目录找到urlPattern.properties
+在里面配置参数
+如：test.show.2 = title, description
+    模块名称.方法名称.方法参数个数=参数1名称，参数2名称...
+
+6.运行
+完成以上操作后访问
+http://localhost:8080/test/show/arg1/arg2.page
+
+
+这里说一下JForum的url的解析方式，这里举个例子:
+http://localhost:8080/test/show/arg1/arg2.page
+
+这个Url的实际含义是:
+http://localhost:8080/jforum/模块名称/方法名称/参数1/参数2.page
+
+modulesMapping.properties中的配置：
+test=net.jforum.view.test.TestAction
+这里的test就是模块名称
+
+urlPattern.properties中的配置：
+test.show.2 = title, description
+这里的title和description就是参数1和参数
+之后在action中通过
+request.getParameter("description");
+request.getParameter("title");
+可以取得它们的值
+
+
+小结：
+在JForum中建立一个action应该说还是比较容易的，在这里它选用freemarker做为显示方式想必也是为了方便美工编辑和美化模板，毕竟对于美工来讲htm编辑起来绝对是比jsp来的方便的。 
