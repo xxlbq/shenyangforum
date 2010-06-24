@@ -232,7 +232,7 @@ CREATE TABLE `jforum_categories` (
   `display_order` int(11) NOT NULL DEFAULT '0',
   `moderated` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`categories_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=gb2312;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -241,7 +241,7 @@ CREATE TABLE `jforum_categories` (
 
 LOCK TABLES `jforum_categories` WRITE;
 /*!40000 ALTER TABLE `jforum_categories` DISABLE KEYS */;
-INSERT INTO `jforum_categories` VALUES (1,'Category Test',1,0),(2,'喜',2,0),(3,'喜',3,0);
+INSERT INTO `jforum_categories` VALUES (1,'怒',1,0),(5,'喜',2,0),(6,'哀',3,0),(7,'乐',4,0);
 /*!40000 ALTER TABLE `jforum_categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,7 +266,7 @@ CREATE TABLE `jforum_config` (
 
 LOCK TABLES `jforum_config` WRITE;
 /*!40000 ALTER TABLE `jforum_config` DISABLE KEYS */;
-INSERT INTO `jforum_config` VALUES ('most.users.ever.online','2',3),('most.users.ever.online.date','1276825051343',4);
+INSERT INTO `jforum_config` VALUES ('most.users.ever.online','4',3),('most.users.ever.online.date','1277198959921',4);
 /*!40000 ALTER TABLE `jforum_config` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -344,7 +344,7 @@ CREATE TABLE `jforum_forums` (
   PRIMARY KEY (`forum_id`),
   KEY `categories_id` (`categories_id`),
   KEY `idx_forums_cats` (`categories_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=gb2312;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,7 +353,7 @@ CREATE TABLE `jforum_forums` (
 
 LOCK TABLES `jforum_forums` WRITE;
 /*!40000 ALTER TABLE `jforum_forums` DISABLE KEYS */;
-INSERT INTO `jforum_forums` VALUES (1,1,'Test Forum','This is a test forum',4,3,5,0),(2,1,'喜','',2,0,0,0),(3,2,'ABCD','SSSSSSSSS',3,0,0,0),(4,1,'TEST OUR WORLD','TEST',5,0,0,0),(5,1,'喜怒哀乐','teste',1,0,0,0);
+INSERT INTO `jforum_forums` VALUES (10,1,'怒发冲冠','',1,4,13,0),(11,5,'喜从天降','',2,1,14,0),(12,6,'哀鸿遍野','',3,0,0,0),(13,7,'乐此不疲','',4,0,0,0);
 /*!40000 ALTER TABLE `jforum_forums` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -394,7 +394,7 @@ CREATE TABLE `jforum_groups` (
   `group_description` varchar(255) DEFAULT NULL,
   `parent_id` int(11) DEFAULT '0',
   PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=gb2312;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -403,7 +403,7 @@ CREATE TABLE `jforum_groups` (
 
 LOCK TABLES `jforum_groups` WRITE;
 /*!40000 ALTER TABLE `jforum_groups` DISABLE KEYS */;
-INSERT INTO `jforum_groups` VALUES (1,'General','General Users',0),(2,'Administration','Admin Users',0);
+INSERT INTO `jforum_groups` VALUES (1,'General','General Users',0),(2,'Administration','Admin Users',0),(3,'Anonymous','匿名用户组',0);
 /*!40000 ALTER TABLE `jforum_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -528,7 +528,7 @@ CREATE TABLE `jforum_posts` (
   KEY `forum_id` (`forum_id`),
   KEY `post_time` (`post_time`),
   KEY `need_moderate` (`need_moderate`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=gb2312;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -537,7 +537,7 @@ CREATE TABLE `jforum_posts` (
 
 LOCK TABLES `jforum_posts` WRITE;
 /*!40000 ALTER TABLE `jforum_posts` DISABLE KEYS */;
-INSERT INTO `jforum_posts` VALUES (1,1,1,2,'2005-01-04 16:59:54','127.0.0.1',1,0,1,1,NULL,0,1,0,0),(2,2,1,2,'2010-06-18 10:19:56','127.0.0.1',1,1,1,1,'2010-06-18 10:19:56',0,1,0,0),(3,1,1,3,'2010-06-18 10:43:19','127.0.0.1',1,0,1,1,'2010-06-18 10:43:19',0,1,0,0),(4,3,1,2,'2010-06-18 10:46:16','127.0.0.1',1,0,1,1,'2010-06-18 10:46:16',0,1,0,0),(5,3,1,2,'2010-06-18 12:02:49','127.0.0.1',1,0,1,1,'2010-06-18 12:02:49',0,1,0,0);
+INSERT INTO `jforum_posts` VALUES (1,1,1,2,'2005-01-04 16:59:54','127.0.0.1',1,0,1,1,NULL,0,1,0,0),(2,2,1,2,'2010-06-18 10:19:56','127.0.0.1',1,1,1,1,'2010-06-18 10:19:56',0,1,0,0),(3,1,1,3,'2010-06-18 10:43:19','127.0.0.1',1,0,1,1,'2010-06-18 10:43:19',0,1,0,0),(4,3,1,2,'2010-06-18 10:46:16','127.0.0.1',1,0,1,1,'2010-06-18 10:46:16',0,1,0,0),(5,3,1,2,'2010-06-18 12:02:49','127.0.0.1',1,0,1,1,'2010-06-18 12:02:49',0,1,0,0),(6,4,10,2,'2010-06-23 12:37:06','127.0.0.1',1,0,1,1,'2010-06-23 12:37:07',0,1,0,0),(7,5,10,2,'2010-06-23 12:37:50','127.0.0.1',1,0,1,1,'2010-06-23 12:37:50',0,1,0,0),(8,6,10,2,'2010-06-23 12:40:54','127.0.0.1',1,0,1,1,'2010-06-23 12:58:52',1,1,0,0),(9,4,10,2,'2010-06-23 12:41:11','127.0.0.1',1,0,1,1,'2010-06-23 12:41:11',0,1,0,0),(10,7,10,2,'2010-06-23 14:42:48','127.0.0.1',1,0,1,1,'2010-06-23 14:45:02',1,1,0,0),(11,5,10,3,'2010-06-23 15:20:51','127.0.0.1',1,0,1,1,'2010-06-23 15:20:51',0,1,0,0),(12,8,11,3,'2010-06-23 15:23:14','127.0.0.1',1,0,1,1,'2010-06-23 15:23:14',0,1,0,0),(13,7,10,3,'2010-06-23 15:29:00','127.0.0.1',1,0,1,1,'2010-06-23 15:29:00',0,1,0,0),(14,8,11,2,'2010-06-24 15:17:53','127.0.0.1',1,0,1,1,'2010-06-24 15:17:53',0,1,0,0);
 /*!40000 ALTER TABLE `jforum_posts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -562,7 +562,7 @@ CREATE TABLE `jforum_posts_text` (
 
 LOCK TABLES `jforum_posts_text` WRITE;
 /*!40000 ALTER TABLE `jforum_posts_text` DISABLE KEYS */;
-INSERT INTO `jforum_posts_text` VALUES (1,'[b][color=blue][size=18]Congratulations :!: [/size][/color][/b]\nYou have completed the installation, and JForum is up and running. \n\nTo start administering the board, login as [i]Admin / <the password you supplied in the installer>[/i] and access the [b][url=/admBase/login.page]Admin Control Panel[/url][/b] using the link that shows up in the bottom of the page. There you will be able to create Categories, Forums and much more  :D  \n\nFor more information and support, please refer to the following pages:\n\n:arrow: Community forum: http://www.jforum.net/community.jsp\n:arrow: Documentation: http://www.jforum.net/doc\n\nThank you for choosing JForum.\n\n[url=http://www.jforum.net/doc/Team]The JForum Team[/url]\n\n','Welcome to JForum'),(2,'[color=#3AA315][size=18][b]Support JForum - Help the project[/b][/size][/color]<hr>This project is Open Source, and maintained by at least one full time Senior Developer, [i]which costs US$ 3,000.00 / month[/i]. If it helped you, please consider helping this project - especially with some [b][url=http://www.jforum.net/contribute.jsp]donation[/url][/b].\n\n[color=#137C9F][size=14][b]Why supporting this project is a good thing[/b][/size][/color]<hr>The JForum Project started four years ago as a completely free and Open Source program, initially entirely developed on my (Rafael Steil) free time. Today, with the help of some very valuable people, I can spend more time on JForum, to improve it and implement new features (lots of things, requested either on the [url=http://www.jforum.net/forums/list.page]forums[/url] or registered in the [url=http://www.jforum.net/jira]bug tracker[/url]).\nThat\'s why I\'m asking you to financially support this work. I love Open Source. I love to use good products without having to pay for it too. But when I see some program that is valuable to my work, that helps me making money, I think it\'s a good idea to support this project.\n\n[b]Some reasons to support open projects[/b]:<ul><li>Because Open Source is cool? Yes<li>To thank for a great tool? Yes<li>To help the project evolve because this will help my work and my earnings? Yes</ul>Also, as the project grows more and more, it would be great to, sometimes, reward some of the great people who help JForum.\n\nSo, that\'s what I\'m asking you: if JForum helps your work, saves your time (time is money, remember?) and increase your earnings, support this project. The simpler way is to make [url=http://www.jforum.net/contribute.jsp]any donation[/url] via PayPal.\n\nJForum has grown a lot every day, since four years ago, which is a great thing, and initially it wasn\'t my intention to fully work on this tool. Lately, I\'m spending a lot of time on it, specially to make JForum 3 a reality, to help users, to improve the program, to research about better solutions. So, your support is very welcome!\n\nThanks!\n\n:arrow: [size=16][b][url=http://www.jforum.net/contribute.jsp]Click here[/url][/b] to go to the [i][b][url=http://www.jforum.net/contribute.jsp]\"Support JForum\"[/url][/b][/i] page.[/size]\n\n','Support JForum - Please read'),(3,'tesssssss','回复:Welcome to JForum'),(4,'ssss :? :mrgreen:','testadmin'),(5,'[quote=Admin]ssss :? :mrgreen:[/quote]\r\n\r\n\r\ntest 引用','testadmin');
+INSERT INTO `jforum_posts_text` VALUES (1,'[b][color=blue][size=18]Congratulations :!: [/size][/color][/b]\nYou have completed the installation, and JForum is up and running. \n\nTo start administering the board, login as [i]Admin / <the password you supplied in the installer>[/i] and access the [b][url=/admBase/login.page]Admin Control Panel[/url][/b] using the link that shows up in the bottom of the page. There you will be able to create Categories, Forums and much more  :D  \n\nFor more information and support, please refer to the following pages:\n\n:arrow: Community forum: http://www.jforum.net/community.jsp\n:arrow: Documentation: http://www.jforum.net/doc\n\nThank you for choosing JForum.\n\n[url=http://www.jforum.net/doc/Team]The JForum Team[/url]\n\n','Welcome to JForum'),(2,'[color=#3AA315][size=18][b]Support JForum - Help the project[/b][/size][/color]<hr>This project is Open Source, and maintained by at least one full time Senior Developer, [i]which costs US$ 3,000.00 / month[/i]. If it helped you, please consider helping this project - especially with some [b][url=http://www.jforum.net/contribute.jsp]donation[/url][/b].\n\n[color=#137C9F][size=14][b]Why supporting this project is a good thing[/b][/size][/color]<hr>The JForum Project started four years ago as a completely free and Open Source program, initially entirely developed on my (Rafael Steil) free time. Today, with the help of some very valuable people, I can spend more time on JForum, to improve it and implement new features (lots of things, requested either on the [url=http://www.jforum.net/forums/list.page]forums[/url] or registered in the [url=http://www.jforum.net/jira]bug tracker[/url]).\nThat\'s why I\'m asking you to financially support this work. I love Open Source. I love to use good products without having to pay for it too. But when I see some program that is valuable to my work, that helps me making money, I think it\'s a good idea to support this project.\n\n[b]Some reasons to support open projects[/b]:<ul><li>Because Open Source is cool? Yes<li>To thank for a great tool? Yes<li>To help the project evolve because this will help my work and my earnings? Yes</ul>Also, as the project grows more and more, it would be great to, sometimes, reward some of the great people who help JForum.\n\nSo, that\'s what I\'m asking you: if JForum helps your work, saves your time (time is money, remember?) and increase your earnings, support this project. The simpler way is to make [url=http://www.jforum.net/contribute.jsp]any donation[/url] via PayPal.\n\nJForum has grown a lot every day, since four years ago, which is a great thing, and initially it wasn\'t my intention to fully work on this tool. Lately, I\'m spending a lot of time on it, specially to make JForum 3 a reality, to help users, to improve the program, to research about better solutions. So, your support is very welcome!\n\nThanks!\n\n:arrow: [size=16][b][url=http://www.jforum.net/contribute.jsp]Click here[/url][/b] to go to the [i][b][url=http://www.jforum.net/contribute.jsp]\"Support JForum\"[/url][/b][/i] page.[/size]\n\n','Support JForum - Please read'),(3,'tesssssss','回复:Welcome to JForum'),(4,'ssss :? :mrgreen:','testadmin'),(5,'[quote=Admin]ssss :? :mrgreen:[/quote]\r\n\r\n\r\ntest 引用','testadmin'),(6,'rt','多少男子汉，一怒为红颜'),(7,'rt','多少同龄鸟，已成分飞燕'),(8,'rt','何必苦苦恋'),(9,'do','多少男子汉，一怒为红颜'),(10,'rt','有了梦寐以求的容颜，是否就算是拥有春天'),(11,'聚散两依依','回复:多少同龄鸟，已成分飞燕'),(12,'rt','喜之郎'),(13,'test','有了梦寐以求的容颜，是否就算是拥有春天'),(14,'水果味','回复:喜之郎');
 /*!40000 ALTER TABLE `jforum_posts_text` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -692,7 +692,7 @@ CREATE TABLE `jforum_role_values` (
 
 LOCK TABLES `jforum_role_values` WRITE;
 /*!40000 ALTER TABLE `jforum_role_values` DISABLE KEYS */;
-INSERT INTO `jforum_role_values` VALUES (24,'1'),(25,'1'),(26,'1'),(27,'1'),(28,'1'),(29,'1'),(30,'1'),(31,'1'),(32,'1'),(33,'1'),(34,'1'),(35,'1'),(36,'1'),(37,'1'),(38,'1'),(39,'1'),(40,'1'),(28,'2'),(28,'3'),(24,'2'),(27,'2'),(3,'2'),(31,'2'),(30,'2'),(37,'2'),(36,'2'),(33,'2'),(32,'2'),(25,'3'),(24,'3'),(27,'3'),(30,'3'),(37,'3'),(36,'3'),(33,'3'),(25,'4'),(24,'4'),(27,'4'),(3,'4'),(31,'4'),(30,'4'),(37,'4'),(36,'4'),(33,'4'),(32,'4'),(25,'5'),(24,'5'),(27,'5'),(3,'5'),(31,'5'),(30,'5'),(37,'5'),(36,'5'),(33,'5'),(32,'5');
+INSERT INTO `jforum_role_values` VALUES (64,'1'),(64,'5'),(64,'6'),(64,'7'),(52,'10'),(50,'10'),(63,'10'),(59,'10'),(54,'10'),(52,'11'),(50,'11'),(63,'11'),(59,'11'),(54,'11'),(52,'12'),(50,'12'),(63,'12'),(59,'12'),(54,'12'),(52,'13'),(50,'13'),(63,'13'),(59,'13'),(54,'13'),(85,'12'),(85,'13'),(85,'10'),(85,'11'),(87,'12'),(87,'13'),(87,'10'),(87,'11'),(88,'12'),(88,'13'),(88,'10'),(88,'11'),(93,'12'),(93,'13'),(93,'10'),(93,'11'),(95,'12'),(95,'13'),(95,'10'),(95,'11'),(96,'1'),(96,'5'),(96,'6'),(96,'7'),(130,'12'),(130,'13'),(130,'10'),(130,'11'),(133,'12'),(133,'13'),(133,'10'),(135,'12'),(135,'13'),(135,'10'),(135,'11'),(136,'1'),(136,'5'),(136,'6'),(136,'7');
 /*!40000 ALTER TABLE `jforum_role_values` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -710,7 +710,7 @@ CREATE TABLE `jforum_roles` (
   PRIMARY KEY (`role_id`),
   KEY `idx_group` (`group_id`),
   KEY `idx_name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=gb2312;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -719,7 +719,7 @@ CREATE TABLE `jforum_roles` (
 
 LOCK TABLES `jforum_roles` WRITE;
 /*!40000 ALTER TABLE `jforum_roles` DISABLE KEYS */;
-INSERT INTO `jforum_roles` VALUES (1,1,'perm_vote'),(2,1,'perm_karma_enabled'),(3,1,'perm_anonymous_post'),(4,1,'perm_create_poll'),(5,1,'perm_bookmarks_enabled'),(6,1,'perm_attachments_download'),(7,1,'perm_create_sticky_announcement_topics'),(8,1,'perm_moderation_log'),(9,2,'perm_administration'),(10,2,'perm_moderation'),(11,2,'perm_moderation_post_remove'),(12,2,'perm_moderation_post_edit'),(13,2,'perm_moderation_topic_move'),(14,2,'perm_moderation_topic_lockUnlock'),(15,2,'perm_moderation_approve_messages'),(16,2,'perm_create_sticky_announcement_topics'),(17,2,'perm_vote'),(18,2,'perm_create_poll'),(19,2,'perm_karma_enabled'),(20,2,'perm_bookmarks_enabled'),(21,2,'perm_attachments_download'),(22,2,'perm_moderation_log'),(23,2,'perm_full_moderation_log'),(24,1,'perm_forum'),(25,2,'perm_forum'),(26,1,'perm_anonymous_post'),(27,2,'perm_anonymous_post'),(28,1,'perm_category'),(29,2,'perm_category'),(30,1,'perm_read_only_forums'),(31,2,'perm_read_only_forums'),(32,1,'perm_html_disabled'),(33,2,'perm_html_disabled'),(34,1,'perm_attachments_enabled'),(35,2,'perm_attachments_enabled'),(36,1,'perm_reply_only'),(37,2,'perm_reply_only'),(38,1,'perm_reply_without_moderation'),(39,2,'perm_reply_without_moderation'),(40,2,'perm_moderation_forums');
+INSERT INTO `jforum_roles` VALUES (41,2,'perm_attachments_enabled'),(42,2,'perm_create_poll'),(43,2,'perm_moderation_post_edit'),(44,2,'perm_create_sticky_announcement_topics'),(45,2,'perm_full_moderation_log'),(46,2,'perm_moderation'),(47,2,'perm_moderation_topic_lockUnlock'),(48,2,'perm_bookmarks_enabled'),(49,2,'perm_administration'),(50,2,'perm_anonymous_post'),(51,2,'perm_moderation_forums'),(52,2,'perm_forum'),(53,2,'perm_moderation_post_remove'),(54,2,'perm_html_disabled'),(55,2,'perm_vote'),(56,2,'perm_attachments_download'),(57,2,'perm_karma_enabled'),(58,2,'perm_moderation_approve_messages'),(59,2,'perm_reply_only'),(60,2,'perm_moderation_log'),(61,2,'perm_moderation_topic_move'),(62,2,'perm_reply_without_moderation'),(63,2,'perm_read_only_forums'),(64,2,'perm_category'),(81,1,'perm_attachments_enabled'),(82,1,'perm_create_poll'),(83,1,'perm_create_sticky_announcement_topics'),(84,1,'perm_bookmarks_enabled'),(85,1,'perm_anonymous_post'),(86,1,'perm_moderation_forums'),(87,1,'perm_forum'),(88,1,'perm_html_disabled'),(89,1,'perm_vote'),(90,1,'perm_attachments_download'),(91,1,'perm_karma_enabled'),(92,1,'perm_moderation_log'),(93,1,'perm_reply_only'),(94,1,'perm_reply_without_moderation'),(95,1,'perm_read_only_forums'),(96,1,'perm_category'),(127,3,'perm_attachments_enabled'),(128,3,'perm_anonymous_post'),(129,3,'perm_moderation_forums'),(130,3,'perm_forum'),(131,3,'perm_html_disabled'),(132,3,'perm_attachments_download'),(133,3,'perm_reply_only'),(134,3,'perm_reply_without_moderation'),(135,3,'perm_read_only_forums'),(136,3,'perm_category');
 /*!40000 ALTER TABLE `jforum_roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -748,7 +748,7 @@ CREATE TABLE `jforum_sessions` (
 
 LOCK TABLES `jforum_sessions` WRITE;
 /*!40000 ALTER TABLE `jforum_sessions` DISABLE KEYS */;
-INSERT INTO `jforum_sessions` VALUES ('B4E6C97D02678E1145601D433297C181',2,'2010-06-18 11:56:40',1170516,'',0,NULL),('BA9CD00C7AD9EDD4599FE11750CB5A21',3,'2010-06-18 10:42:49',121390,'',0,NULL);
+INSERT INTO `jforum_sessions` VALUES ('BF8B3AD02ACD9B85CFA8934F81B29B19',2,'2010-06-24 16:40:38',4102921,'',0,NULL),('6801ED3B1D1C2C3B9742F8BBD81EF572',3,'2010-06-23 15:33:28',236609,'',0,NULL);
 /*!40000 ALTER TABLE `jforum_sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -830,7 +830,7 @@ CREATE TABLE `jforum_topics` (
   KEY `topic_first_post_id` (`topic_first_post_id`),
   KEY `topic_last_post_id` (`topic_last_post_id`),
   KEY `topic_moved_id` (`topic_moved_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=gb2312;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=gb2312;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -839,7 +839,7 @@ CREATE TABLE `jforum_topics` (
 
 LOCK TABLES `jforum_topics` WRITE;
 /*!40000 ALTER TABLE `jforum_topics` DISABLE KEYS */;
-INSERT INTO `jforum_topics` VALUES (1,1,'Welcome to JForum',2,'2005-01-04 16:59:54',4,1,0,0,0,1,3,0,0),(2,1,'Support JForum - Please read',2,'2010-06-18 10:19:56',1,0,0,0,2,2,2,0,0),(3,1,'testadmin',2,'2010-06-18 10:46:16',7,1,0,0,0,4,5,0,0);
+INSERT INTO `jforum_topics` VALUES (1,1,'Welcome to JForum',2,'2005-01-04 16:59:54',4,1,0,0,0,1,3,0,0),(2,1,'Support JForum - Please read',2,'2010-06-18 10:19:56',1,0,0,0,2,2,2,0,0),(3,1,'testadmin',2,'2010-06-18 10:46:16',7,1,0,0,0,4,5,0,0),(4,10,'多少男子汉，一怒为红颜',2,'2010-06-23 12:37:06',13,1,0,0,0,6,9,0,0),(5,10,'多少同龄鸟，已成分飞燕',2,'2010-06-23 12:37:50',9,1,0,0,0,7,11,0,0),(6,10,'何必苦苦恋',2,'2010-06-23 12:40:54',9,0,0,0,1,8,8,0,0),(7,10,'有了梦寐以求的容颜，是否就算是拥有春天',2,'2010-06-23 14:42:48',22,1,0,0,2,10,13,0,0),(8,11,'喜之郎',3,'2010-06-23 15:23:14',8,1,0,0,0,12,14,0,0);
 /*!40000 ALTER TABLE `jforum_topics` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -865,7 +865,7 @@ CREATE TABLE `jforum_topics_watch` (
 
 LOCK TABLES `jforum_topics_watch` WRITE;
 /*!40000 ALTER TABLE `jforum_topics_watch` DISABLE KEYS */;
-INSERT INTO `jforum_topics_watch` VALUES (1,3,1),(3,2,1);
+INSERT INTO `jforum_topics_watch` VALUES (1,3,1),(3,2,1),(4,2,1),(5,2,0),(6,2,1),(7,2,1),(5,3,1),(8,3,0),(7,3,1),(8,2,1);
 /*!40000 ALTER TABLE `jforum_topics_watch` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -890,7 +890,7 @@ CREATE TABLE `jforum_user_groups` (
 
 LOCK TABLES `jforum_user_groups` WRITE;
 /*!40000 ALTER TABLE `jforum_user_groups` DISABLE KEYS */;
-INSERT INTO `jforum_user_groups` VALUES (1,1),(2,2),(1,3);
+INSERT INTO `jforum_user_groups` VALUES (1,3),(2,2),(3,1);
 /*!40000 ALTER TABLE `jforum_user_groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -966,7 +966,7 @@ CREATE TABLE `jforum_users` (
 
 LOCK TABLES `jforum_users` WRITE;
 /*!40000 ALTER TABLE `jforum_users` DISABLE KEYS */;
-INSERT INTO `jforum_users` VALUES (1,NULL,'Anonymous','nopass',0,0,NULL,'2010-06-18 10:19:56',NULL,0,'',NULL,'','%d/%M/%Y %H:%i',0,0,NULL,NULL,0,1,0,1,1,1,1,1,1,0,0,1,1,0,NULL,0,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(2,NULL,'Admin','1f2894dd28cc45ae03a3fd23ffdf2dbc',0,0,NULL,'2010-06-18 10:19:56',NULL,3,'',NULL,'','%d/%M/%Y %H:%i',0,0,NULL,NULL,0,1,0,1,1,1,1,1,1,0,0,1,1,0,NULL,0,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(3,1,'test1','5a105e8b9d40e1329780d62ea2265d8a',0,0,NULL,'2010-06-18 10:37:28',NULL,1,'',NULL,'','%d/%M/%Y %H:%i',0,0,NULL,NULL,0,1,0,1,1,1,1,1,1,0,0,1,1,0,NULL,0,'1@2.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL);
+INSERT INTO `jforum_users` VALUES (1,NULL,'Anonymous','nopass',0,0,NULL,'2010-06-18 10:19:56',NULL,0,'',NULL,'','%d/%M/%Y %H:%i',0,0,NULL,NULL,0,1,0,1,1,1,1,1,1,0,0,1,1,0,NULL,0,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(2,NULL,'Admin','1f2894dd28cc45ae03a3fd23ffdf2dbc',0,0,NULL,'2010-06-18 10:19:56',NULL,9,'',NULL,'','%d/%M/%Y %H:%i',0,0,NULL,NULL,0,1,0,1,1,1,1,1,1,0,0,1,1,0,NULL,0,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL),(3,1,'test1','5a105e8b9d40e1329780d62ea2265d8a',0,0,NULL,'2010-06-18 10:37:28',NULL,4,'',NULL,'','%d/%M/%Y %H:%i',0,0,NULL,NULL,0,1,0,1,1,1,1,1,1,0,0,1,1,0,NULL,0,'1@2.com',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `jforum_users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1080,4 +1080,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2010-06-18 18:27:32
+-- Dump completed on 2010-06-24 18:28:43
