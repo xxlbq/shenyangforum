@@ -1,0 +1,6 @@
+-- 导出
+D:\soft-setup\mysql-5.1.48-win32\bin>mysqldump -uroot -plubq jforum_shenyang  > d:\shenyang-bak.sql
+
+-- 导入
+
+D:\soft-setup\mysql-5.1.48-win32\bin>mysql -uroot -plubq  test_dump < d:\shenyang-bak.sql

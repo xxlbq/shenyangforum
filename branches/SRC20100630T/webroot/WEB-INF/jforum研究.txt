@@ -1,0 +1,196 @@
+
+2010-06-04
+JForum研究
+文章分类:Java编程
+JForum.java可以称为是jforum的引擎，它继承自net.jforum.JForumBaseServlet类，并间接的继承了 HttpServlet。当第一次请求该应用的时候，servlet容器将加载该类，并调用其初始化方法init(ServletConfig config)，并调用service方法处理请求。（但最好配置成加载应用的时候就初始化该类）
+
+一、init(ServletConfig config)
+
+(一)  调用其父类init(config)方法
+
+该方法主要职责是加载主要配置文件，配置jfreemarker的模板引擎，并保存到net.jforum. JForumExecutionContext类。
+
+详细内容包括：
+
+1.         获取servletContext路径；
+
+2.         判断应用开发模式；
+
+3.         设置log4j文件路径；
+
+4.         调用ConfigLoader.startSystemglobals(appPath)加载全局变量文件 SystemGlobals.properties以及用户自定义的配置文件，例如，mysql.properties文件。
+
+5.         调用ConfigLoader.startCacheEngine()启动缓存引擎
+
+l         获取缓存引擎实现类，SystemGlobals.getValue(…)
+
+l         加载并初始化缓存引擎类
+
+l         获取、加载并实例化可缓存的对象(主要是repository包下的类，如ForumRepository)，同时将缓存引擎实例注入到可缓存的对象中。
+
+6.         创建freemark的Configuration类实例，并进行相应设置
+
+l         templateCfg.setTemplateUpdateDelay(2);
+
+l         templateCfg.setSetting("number_format", "#");
+
+l         templateCfg.setSharedVariable("startupTime", new Long(new Date().getTime()));
+
+l         String defaultPath = SystemGlobals.getApplicationPath() + "/templates";
+
+l         FileTemplateLoader defaultLoader = new FileTemplateLoader(new File(defaultPath));
+
+l         templateCfg.setTemplateLoader(defaultLoader);
+
+l         调用ModulesRepository.init(SystemGlobals.getValue(ConfigKeys.CONFIG_DIR))，加载modulesMapping.properties模块映射文件
+
+7.         调用this.loadConfigStuff()方法，加载其他属性文件
+
+l         ConfigLoader.loadUrlPatterns()，加载urlPattern.properties文件
+
+l         I18n.load();加载国际化文件
+
+l         Tpl.load(SystemGlobals.getValue(ConfigKeys.TEMPLATES_MAPPING)),加载 templatesMapping.properties文件             
+
+l         BBCodeRepository.setBBCollection(new BBCodeHandler().parse());其加载并处理了bb_config.xml文件
+
+8.         调用JForumExecutionContext.setTemplateConfig(templateCfg)
+
+(二)  调用父类startApplication()方法
+
+1.         SystemGlobals.loadQueries(SystemGlobals.getValue(ConfigKeys.SQL_QUERIES_GENERIC)); 加载generic_quries.sql文件
+
+2.         SystemGlobals.loadQueries(SystemGlobals.getValue(ConfigKeys.SQL_QUERIES_DRIVER)); 加载相应数据库的sql文件
+
+3.         String filename = SystemGlobals.getValue(ConfigKeys.QUARTZ_CONFIG);
+
+4.         SystemGlobals.loadAdditionalDefaults(filename);
+
+5.         加载任务调度文件quartz-jforum.properites
+
+6.         ConfigLoader.createLoginAuthenticator();
+
+7.         创建net.jforum.sso.DefaultLoginAuthenticator对象，并注册到SystemGlobals对象中。
+
+8.         ConfigLoader.loadDaoImplementation();
+
+9.         加载并初始化net.jforum.dao.mysql.MysqlDataAccessDriver类，该类是访问各种DAO入口。
+
+10.     ConfigLoader.listenForChanges();
+
+11.     ConfigLoader.startSearchIndexer();
+
+12.     ConfigLoader.startSummaryJob();
+
+(三)  调用ForumStartup.startDatabase()方法
+
+创建DBConnection实例
+
+(四)  获得数据库连接DBConnection.getImplementation().getConnection()
+
+(五)  获取net.jforum.JForumExecutionContext 的对象ex = JForumExecutionContext.get()并进行相关设置 ex.setConnection(conn);JForumExecutionContext.set(ex);
+
+(六)  调用ForumStartup.startForumRepository()
+
+加载论坛主要信息，包括ForumDAO, CategoryDAO, ConfigDAO的相关信息以及论坛的总体数据（loadUsersInfo()如用户总数，loadMostUsersEverOnline()最高峰值）
+
+(七)  RankingRepository.loadRanks()
+
+(八)  SmiliesRepository.loadSmilies()
+
+(九)  BanlistRepository.loadBanlist()
+
+
+
+二、service(HttpServletRequest req, HttpServletResponse res)方法
+
+(一)  request = new WebRequestContext(req);对reqeust对象进行包装，完成了对url路径的解析，将module、action、 paremeter等保存request对象的query文件属性中。
+
+(二)  实例化JForumContext对象forumContext = new
+
+JForumContext(request.getContextPath(),SystemGlobals.getValue(ConfigKeys.SERVLET_EXTENSION), request, response);
+
+(三)  将forumContext注册到JForumExecutionContext
+
+ex = JForumExecutionContext.get();ex.setForumContext(forumContext);
+
+JForumExecutionContext.set(ex);
+
+(四)  进一步进行freemarker的配置模板引擎
+
+l         ontrollerUtils utils = new ControllerUtils();
+
+l         utils.refreshSession();
+
+l         context.put("logged", SessionFacade.isLogged());                                                
+
+l         utils.prepareTemplateContext(context, forumContext);
+
+context为freemarker中的SimpleHash类对象，context是真正的主角，所有需要再页面使用的变量都需放到该对象中。
+
+(五)  调用this.processCommand(out, request, response, encoding, context, moduleClass)
+
+l         获取moduleClass所对应的Command对象实例
+
+l         进行请求处理并返回Tamplate对象
+
+调用template.process(JForumExecutionContext.getTemplateContext(), out)进行输出显示
+
+三.几个重要java类
+
+1.       net.jforum.util.preferences.SystemGlobls.java
+
+存储了系统的全局变量，通过该类可以获取SystemGlobals.properties和相关配置文件的值。主要存储内容包括：
+
+l         defaults = new Properties()，用于存储SystemGlobals.properties中的属性
+
+l         installation = new Properties()，用于存储额外的属性配置文件，主要是安装jforum时候生成的jforum-custom.conf文件。
+
+l         additionalDefaultsList = new ArrayList()，用于记录所加载过的附加的属性文件名。
+
+l         queries = new Properties()，用于存储sql语句
+
+l         transientValues = new Properties()存放瞬时变量
+
+l         objectProperties = new HashMap()，存储对象
+
+2.       net.jforum.ConfigLoader.java
+
+加载forum配置文件的通用工具类。主要方法及作用如下：
+
+l         startSystemglobals(String appPath)
+
+该方法调用了SystemGlobals的方法加载了SystemGlobals.properties、jforum-custom.cof、 mysql.properties文件。
+
+l         startCacheEngine()
+
+实例化缓存引擎对象、实例化可缓存的对象（repository包下的类以及SessionFacade类）、将缓存引擎对象注入到可缓存的对象中。
+
+l         loadModulesMapping(String baseConfigDir)加载 ModulesMapping.proerties。
+
+l         loadUrlPatterns()，加载urlPattern.properties文件，解析保存到UrlPatternCollection类中
+
+l         createLoginAuthenticator()，创建登陆验证对象，登记到SystemGloble.java对象中 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###  lubq
+
+/shenyangforum/rss/recentTopics.page
+                                  模块名   方法名
+
+
