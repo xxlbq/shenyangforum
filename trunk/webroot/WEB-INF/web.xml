@@ -1,26 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE web-app
-    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-    "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app id="WebApp_ID" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
 
-<web-app>
     <display-name>JForum - Powering Communities</display-name>
     <description>Open Source Java Forum Software</description>
 
-	<!-- Clickstream -->
-	<filter>
-		<filter-name>clickstream-jforum</filter-name>
-		<filter-class>net.jforum.util.legacy.clickstream.ClickstreamFilter</filter-class>
-	</filter>
 
-	<filter-mapping>
-		<filter-name>clickstream-jforum</filter-name>
-		<url-pattern>*.page</url-pattern>
-	</filter-mapping>
+   
+<!--   S2-->
     
     <listener>
     	<listener-class>net.jforum.ForumSessionListener</listener-class>
     </listener>
+    
+    
+    
+    
+    <filter>
+        <filter-name>struts2</filter-name>        
+        <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
+        
+    </filter>
+    <filter-mapping>
+        <filter-name>struts2</filter-name>
+        <url-pattern>/*</url-pattern>
+        
+    </filter-mapping>
+
+	<!-- Clickstream -->
+<!--	<filter>-->
+<!--		<filter-name>clickstream-jforum</filter-name>-->
+<!--		<filter-class>net.jforum.util.legacy.clickstream.ClickstreamFilter</filter-class>-->
+<!--	</filter>-->
+<!---->
+<!--	<filter-mapping>-->
+<!--		<filter-name>clickstream-jforum</filter-name>-->
+<!--		<url-pattern>*.page</url-pattern>-->
+<!--	</filter-mapping>-->
+<!--    -->
 
 	<!-- JForum Controller -->
     <servlet>
@@ -50,10 +66,10 @@
 <!--    	<url-pattern>/install/install.page</url-pattern>-->
 <!--    </servlet-mapping>-->
 
-	<servlet-mapping>
-    	<servlet-name>jforum</servlet-name>
-    	<url-pattern>*.page</url-pattern>
-    </servlet-mapping>
+<!--	<servlet-mapping>-->
+<!--    	<servlet-name>jforum</servlet-name>-->
+<!--    	<url-pattern>*.page</url-pattern>-->
+<!--    </servlet-mapping>-->
     
     <!-- SESSION -->
     <session-config>
@@ -61,9 +77,9 @@
     </session-config>
     
 	<welcome-file-list>
-		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
-
+	
 	<!-- SSO -->
 	<!-- Example of SSO configuration -->
 	<!--
@@ -87,4 +103,8 @@
       <realm-name>REALM NAME HERE</realm-name>
    </login-config>
    -->
+   
+   
+
+   
 </web-app>
