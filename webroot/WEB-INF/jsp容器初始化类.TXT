@@ -1,0 +1,43 @@
+jsp 容器初始化类
+
+	web层与业务层解耦合
+		in jsp:  	this.getServletContext().getAttribute("user");
+			1.在一个servlet初始化时 将类装入servletcontext中  在web层再拿出来
+				public class InitServlet extends HttpServlet {
+
+					@Override
+					public void init() throws ServletException {
+						System.out.println("initservlet");
+						User user=new User();
+						this.getServletContext().setAttribute("user",user);
+					}
+					
+				}
+
+				 <servlet>
+					<servlet-name>InitServlet</servlet-name>
+					<servlet-class>com.bjsxt.drp.servlet.InitServlet</servlet-class>
+					<load-on-startup>0</load-on-startup>
+				  </servlet>
+
+								
+
+			2.ServletContextListener 在容器初始化之前就会执行，
+				public class ServletInitListener implements ServletContextListener {
+
+					public void contextDestroyed(ServletContextEvent arg0) {
+						// TODO Auto-generated method stub
+
+					}
+
+					public void contextInitialized(ServletContextEvent sce) {
+						User user=new User();
+						sce.getServletContext().setAttribute("user",user);
+
+					}
+
+				}
+
+				<listener>
+					<listener-class>com.bjsxt.drp.listener.ServletInitListener</listener-class>
+				  </listener>
