@@ -53,6 +53,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.spi.LoggerFactory;
+
 import net.jforum.context.JForumContext;
 import net.jforum.context.RequestContext;
 import net.jforum.context.ResponseContext;
@@ -82,7 +85,7 @@ import freemarker.template.Template;
 public class JForum extends JForumBaseServlet 
 {
 	private static boolean isDatabaseUp;
-	
+	private static Logger log = Logger.getLogger(JForum.class);
 	/**
 	 * @see javax.servlet.Servlet#init(javax.servlet.ServletConfig)
 	 */
@@ -90,6 +93,8 @@ public class JForum extends JForumBaseServlet
 	{
 		super.init(config);
 		super.startApplication();
+		
+		log.info("== JForum init ========================");
 		
 		// Start database
 		isDatabaseUp = ForumStartup.startDatabase();

@@ -105,7 +105,7 @@ public class JForumBaseServlet extends HttpServlet
 			String appPath = config.getServletContext().getRealPath("");
 			debug = "true".equals(config.getInitParameter("development"));
 
-			DOMConfigurator.configure(appPath + "/WEB-INF/log4j.xml");
+//			DOMConfigurator.configure(appPath + "/WEB-INF/log4j.xml");
 
 			logger.info("Starting JForum. Debug mode is " + debug);
 
