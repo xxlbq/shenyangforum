@@ -194,3 +194,15 @@ l         createLoginAuthenticator()£¬´´½¨µÇÂ½ÑéÖ¤¶ÔÏó£¬µÇ¼Çµ½SystemGloble.java¶
                                   Ä£¿éÃû   ·½·¨Ãû
 
 
+
+
+ÊÕ²Ø
+
+==========>serializer.jar
+
+µÚ¶þ´ÎÅöµ½Õâ¸ö´íÎóÁË£¬ÉÏÒ»´ÎÔõÃ´½â¾öµÄÍüÁË£¬»¹ÊÇÐ´ÏÂÀ´ÒÔ·ÀÒÔºóÔÙÅö¼û»¹ÒªÔÙ´ÓÐÂ°Ù¶È¡£
+
+µ±¿´¼ûÕâ¸ö´íÎóÊ±¾ÍÆæ¹Ö£¬Ã÷Ã÷³ÌÐòÖÐÃ»ÓÃµ½org/apache/xml/serializer/TreeWalkerÕâ¸öÀà£¬Ëü±¨Ê²Ã´´í°¡£¬²»¹ý»¹ÊÇ²éÁË²é¡£
+
+ÕÒµ½µÄÔ­ÒòÊÇ£ºÔ­±¾Õâ¸öÀàÊÇ°üº¬ÔÚxalan.jarÖÐµÄ£¬µ«ÊÇxalan-j2.7.0°æµÄ·¢²¼°üÖÐ£¬½«serializer°üÖÐµÄÀàµ¥¶À´ò°ü³Éserializer.jar£¬²»ÔÙ°üº¬ÔÚxalan.jarÖÐ£¬ËùÒÔ²Å»á¼´Ê¹Ìí¼ÓÁËxalan.jarÒ²ÎÞ·¨ÕÒµ½¸ÃÀà£¬Ìí¼Óºó¼´¿É½â¾öÎÊÌâ¡£ÎÒËÑÁËÏÂ×Ô¼ºµÄÓ²ÅÌ£¬Ô­À´ÏÂÔØµÄxercesÑ¹Ëõ°üÖÐÓÐÕâ¸ö°ü£¬ÏëÆðÉÏ´Î½â¾öÊÇ°ÑÕâ¸ö°ü·ÅÔÚtomcatÏÂÁË£¬Õâ´ÎÐ´µÄjavaÎÄ¼þµÃ½«Õâ¸ö°ü·Åµ½»·¾³±äÁ¿Àï£¬ÓÚÊÇ·Å½øÈ¥£¬ÖØ´ò¿ªeditplus£¬ÎÊÌâ½â¾ö
+
