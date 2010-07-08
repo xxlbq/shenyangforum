@@ -4,7 +4,7 @@
 <struts>
 	<include file="struts-default.xml" />
 	
-	
+	<constant name="struts.devMode" value="true"/>
 	<package name="forums" extends="struts-default">
 
 		<action name="list" class="net.jforum.s2action.JForumAction" method="list">
@@ -13,68 +13,68 @@
 
 	</package>
 	
-	
-	<package name="tutorial" extends="struts-default">
-
-		<action name="HelloWorld" class="tutorial.HelloWorld">
-			<result>HelloWorld.jsp</result>
-		</action>
-
-
-		<action name="AliasHelloWorld" class="tutorial.HelloWorld"
-			method="aliasAction">
-			<result>HelloWorld.jsp</result>
-		</action>
-
-		<action name="VMHelloWorld" class="tutorial.HelloWorld" method="vmAction">
-			<result type="velocity">/HelloWorld.vm</result>
-		</action>
-
-		<action name="Login" class="tutorial.Login">
-			<result>/HelloWorld.jsp</result>
-		</action>
-
-
-		<action name="LoginX" class="tutorial.LoginX">
-			<result>/HelloWorld.jsp</result>
-		</action>
-
-
-
-		<action name="ProductConfirm" class="tutorial.ProductConfirm">
-			<result>/ShowProducts.jsp</result>
-			<result name="input">/AddProducts.jsp</result>
-		</action>
-	</package>
-
-
-
-
-
-	<package name="InterceptorDemo" extends="struts-default">
-
-		<interceptors>
-			<interceptor name="auth" class="tutorial.AuthorizationInterceptor" />
-		</interceptors>
-		
-		<action name="Timer" class="tutorial.TimerInterceptorAction">
-			<interceptor-ref name="timer" />
-			<result>/Timer.jsp </result>
-		</action>
-		<action name="InterceptorLogin" class="tutorial.InterceptorLogin">
-			<result type="chain">AuthorizatedAccess </result>
-		</action>
-		<action name="AuthorizatedAccess" class="tutorial.AuthorizatedAccess">
-			<interceptor-ref name="auth" />
-			<result name="login">/Login.jsp </result>
-			<result name="success">/ShowRole.jsp </result>
-		</action>
-		<action name="clearRole" class="tutorial.ClearRole">
-			<interceptor-ref name="auth" />
-			<result name="login">/Login.jsp </result>
-			<result name="success" type="chain">AuthorizatedAccess</result>
-		</action>
-	</package>
+<!--	-->
+<!--	<package name="tutorial" extends="struts-default">-->
+<!---->
+<!--		<action name="HelloWorld" class="tutorial.HelloWorld">-->
+<!--			<result>HelloWorld.jsp</result>-->
+<!--		</action>-->
+<!---->
+<!---->
+<!--		<action name="AliasHelloWorld" class="tutorial.HelloWorld"-->
+<!--			method="aliasAction">-->
+<!--			<result>HelloWorld.jsp</result>-->
+<!--		</action>-->
+<!---->
+<!--		<action name="VMHelloWorld" class="tutorial.HelloWorld" method="vmAction">-->
+<!--			<result type="velocity">/HelloWorld.vm</result>-->
+<!--		</action>-->
+<!---->
+<!--		<action name="Login" class="tutorial.Login">-->
+<!--			<result>/HelloWorld.jsp</result>-->
+<!--		</action>-->
+<!---->
+<!---->
+<!--		<action name="LoginX" class="tutorial.LoginX">-->
+<!--			<result>/HelloWorld.jsp</result>-->
+<!--		</action>-->
+<!---->
+<!---->
+<!---->
+<!--		<action name="ProductConfirm" class="tutorial.ProductConfirm">-->
+<!--			<result>/ShowProducts.jsp</result>-->
+<!--			<result name="input">/AddProducts.jsp</result>-->
+<!--		</action>-->
+<!--	</package>-->
+<!---->
+<!---->
+<!---->
+<!---->
+<!---->
+<!--	<package name="InterceptorDemo" extends="struts-default">-->
+<!---->
+<!--		<interceptors>-->
+<!--			<interceptor name="auth" class="tutorial.AuthorizationInterceptor" />-->
+<!--		</interceptors>-->
+<!--		-->
+<!--		<action name="Timer" class="tutorial.TimerInterceptorAction">-->
+<!--			<interceptor-ref name="timer" />-->
+<!--			<result>/Timer.jsp </result>-->
+<!--		</action>-->
+<!--		<action name="InterceptorLogin" class="tutorial.InterceptorLogin">-->
+<!--			<result type="chain">AuthorizatedAccess </result>-->
+<!--		</action>-->
+<!--		<action name="AuthorizatedAccess" class="tutorial.AuthorizatedAccess">-->
+<!--			<interceptor-ref name="auth" />-->
+<!--			<result name="login">/Login.jsp </result>-->
+<!--			<result name="success">/ShowRole.jsp </result>-->
+<!--		</action>-->
+<!--		<action name="clearRole" class="tutorial.ClearRole">-->
+<!--			<interceptor-ref name="auth" />-->
+<!--			<result name="login">/Login.jsp </result>-->
+<!--			<result name="success" type="chain">AuthorizatedAccess</result>-->
+<!--		</action>-->
+<!--	</package>-->
 
 
 </struts>
