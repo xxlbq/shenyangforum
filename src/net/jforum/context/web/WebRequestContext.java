@@ -106,7 +106,7 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 		
 		if (isGet && isQueryStringEmpty && requestUri.endsWith(servletExtension)) {
 			superRequest.setCharacterEncoding(encoding); 
-			this.parseFriendlyURL(requestUri, servletExtension);
+//			this.parseFriendlyURL(requestUri, servletExtension);
 		}
 		else if (isPost) {
 			isMultipart = ServletFileUpload.isMultipartContent(new ServletRequestContext(superRequest));
@@ -149,15 +149,15 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 				}
 			}
 			
-			if (this.getModule() == null && this.getAction() == null) {
-				int index = requestUri.indexOf('?');
-				
-				if (index > -1) {
-					requestUri = requestUri.substring(0, index);
-				}
-				
-				this.parseFriendlyURL(requestUri, servletExtension);
-			}
+//			if (this.getModule() == null && this.getAction() == null) {
+//				int index = requestUri.indexOf('?');
+//				
+//				if (index > -1) {
+//					requestUri = requestUri.substring(0, index);
+//				}
+//				
+//				this.parseFriendlyURL(requestUri, servletExtension);
+//			}
 		}
 	}
 
@@ -165,44 +165,44 @@ public class WebRequestContext extends HttpServletRequestWrapper implements Requ
 	 * @param requestUri
 	 * @param servletExtension
 	 */
-	private void parseFriendlyURL(String requestUri, String servletExtension) 
-	{
-		requestUri = requestUri.substring(0, requestUri.length() - servletExtension.length());
-		String[] urlModel = requestUri.split("/");
-		
-		int moduleIndex = 1;
-		int actionIndex = 2;
-		int baseLen = 3;
-		
-		UrlPattern url = null;
-		
-		if (urlModel.length >= baseLen) {
-			// <moduleName>.<actionName>.<numberOfParameters>
-			StringBuffer sb = new StringBuffer(64)
-				.append(urlModel[moduleIndex])
-				.append('.')
-				.append(urlModel[actionIndex])
-				.append('.')
-				.append(urlModel.length - baseLen);
-			
-			url = UrlPatternCollection.findPattern(sb.toString());
-		}
-
-		if (url != null) {
-			if (url.getSize() >= urlModel.length - baseLen) {
-				for (int i = 0; i < url.getSize(); i++) {
-					this.addParameter(url.getVars()[i], urlModel[i + baseLen]);
-				}
-			}
-			
-			this.addParameter("module", urlModel[moduleIndex]);
-			this.addParameter("action", urlModel[actionIndex]);
-		}
-		else {
-			this.addParameter("module", null);
-			this.addParameter("action", null);
-		}
-	}
+//	private void parseFriendlyURL(String requestUri, String servletExtension) 
+//	{
+//		requestUri = requestUri.substring(0, requestUri.length() - servletExtension.length());
+//		String[] urlModel = requestUri.split("/");
+//		
+//		int moduleIndex = 1;
+//		int actionIndex = 2;
+//		int baseLen = 3;
+//		
+//		UrlPattern url = null;
+//		
+//		if (urlModel.length >= baseLen) {
+//			// <moduleName>.<actionName>.<numberOfParameters>
+//			StringBuffer sb = new StringBuffer(64)
+//				.append(urlModel[moduleIndex])
+//				.append('.')
+//				.append(urlModel[actionIndex])
+//				.append('.')
+//				.append(urlModel.length - baseLen);
+//			
+//			url = UrlPatternCollection.findPattern(sb.toString());
+//		}
+//
+//		if (url != null) {
+//			if (url.getSize() >= urlModel.length - baseLen) {
+//				for (int i = 0; i < url.getSize(); i++) {
+//					this.addParameter(url.getVars()[i], urlModel[i + baseLen]);
+//				}
+//			}
+//			
+//			this.addParameter("module", urlModel[moduleIndex]);
+//			this.addParameter("action", urlModel[actionIndex]);
+//		}
+//		else {
+//			this.addParameter("module", null);
+//			this.addParameter("action", null);
+//		}
+//	}
 
     public SessionContext getSessionContext(boolean create) {
         return new WebSessionContext(this.getSession(true));

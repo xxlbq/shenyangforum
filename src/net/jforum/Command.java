@@ -138,11 +138,13 @@ public abstract class Command
 		}
 
         try {
-            return JForumExecutionContext.templateConfig().getTemplate(
-                new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)).
-                append('/').append(this.templateName).toString());
+//            return JForumExecutionContext.templateConfig().getTemplate(
+//                new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)).
+//                append('/').append(this.templateName).toString());
+        	
+        	return null;
         }
-        catch (IOException e) {
+        catch (Exception e) {
             throw new ForumException( e);
         }
     }

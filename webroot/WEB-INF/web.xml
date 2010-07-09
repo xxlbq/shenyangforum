@@ -32,12 +32,21 @@
     	<display-name>JForumInitServlet</display-name>
     	<servlet-name>JForumInitServlet</servlet-name>
     	<servlet-class>net.jforum.JForumInitServlet</servlet-class>
+    	
     	<load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
     	<servlet-name>JForumInitServlet</servlet-name>
     	<url-pattern>/JForumInitServlet</url-pattern>
     </servlet-mapping>
+
+
+
+	<servlet>
+		<servlet-name>JspSupportServlet</servlet-name>
+		<servlet-class>org.apache.struts2.views.JspSupportServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>  
 
 	<!-- Clickstream -->
 <!--	<filter>-->

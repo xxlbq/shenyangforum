@@ -62,7 +62,6 @@ public class JForumInitServlet extends HttpServlet {
 		try {
 			String appPath = config.getServletContext().getRealPath("");
 			debug = "true".equals(config.getInitParameter("development"));
-
 //			DOMConfigurator.configure(appPath + "/WEB-INF/log4j.xml");
 
 			logger.info("Starting JForum. Debug mode is " + debug);
@@ -71,38 +70,46 @@ public class JForumInitServlet extends HttpServlet {
 			ConfigLoader.startCacheEngine();
 
 			// Configure the template engine
-			Configuration templateCfg = new Configuration();
-			templateCfg.setTemplateUpdateDelay(2);
-			templateCfg.setSetting("number_format", "#");
-			templateCfg.setSharedVariable("startupTime", new Long(new Date().getTime()));
+//			Configuration templateCfg = new Configuration();
+			
+			
+//			templateCfg.setTemplateUpdateDelay(2);
+//			templateCfg.setSetting("number_format", "#");
+			config.getServletContext().setAttribute("number_format", "#");
+//			templateCfg.setSharedVariable("startupTime", new Long(new Date().getTime()));
+			
+			config.getServletContext().setAttribute("startupTime",  new Long(new Date().getTime()));
 
 			// Create the default template loader
 			String defaultPath = SystemGlobals.getApplicationPath() + "/templates";
 			FileTemplateLoader defaultLoader = new FileTemplateLoader(new File(defaultPath));
 
-			String extraTemplatePath = SystemGlobals.getValue(ConfigKeys.FREEMARKER_EXTRA_TEMPLATE_PATH);
+//			String extraTemplatePath = SystemGlobals.getValue(ConfigKeys.FREEMARKER_EXTRA_TEMPLATE_PATH);
 			
-			if (StringUtils.isNotBlank(extraTemplatePath)) {
-				// An extra template path is configured, we need a MultiTemplateLoader
-				FileTemplateLoader extraLoader = new FileTemplateLoader(new File(extraTemplatePath));
-				TemplateLoader[] loaders = new TemplateLoader[] { extraLoader, defaultLoader };
-				MultiTemplateLoader multiLoader = new MultiTemplateLoader(loaders);
-				templateCfg.setTemplateLoader(multiLoader);
-			} 
-			else {
-				// An extra template path is not configured, we only need the default loader
-				templateCfg.setTemplateLoader(defaultLoader);
-			}
+//			if (StringUtils.isNotBlank(extraTemplatePath)) {
+//				// An extra template path is configured, we need a MultiTemplateLoader
+//				FileTemplateLoader extraLoader = new FileTemplateLoader(new File(extraTemplatePath));
+//				TemplateLoader[] loaders = new TemplateLoader[] { extraLoader, defaultLoader };
+//				MultiTemplateLoader multiLoader = new MultiTemplateLoader(loaders);
+//				templateCfg.setTemplateLoader(multiLoader);
+//			} 
+//			else {
+//				// An extra template path is not configured, we only need the default loader
+//				templateCfg.setTemplateLoader(defaultLoader);
+//			}
 
 			ModulesRepository.init(SystemGlobals.getValue(ConfigKeys.CONFIG_DIR));
 
 			this.loadConfigStuff();
+			logger.info("I18 N  LOADED");
+			
+			
+//			
+//			if (!this.debug) {
+//				templateCfg.setTemplateUpdateDelay(3600);
+//			}
 
-			if (!this.debug) {
-				templateCfg.setTemplateUpdateDelay(3600);
-			}
-
-			JForumExecutionContext.setTemplateConfig(templateCfg);
+//			JForumExecutionContext.setTemplateConfig(templateCfg);
 		}
 		catch (Exception e) {
 			throw new ForumStartupException("Error while starting JForum", e);
@@ -170,9 +177,10 @@ public class JForumInitServlet extends HttpServlet {
 	
 	protected void loadConfigStuff()
 	{
-		ConfigLoader.loadUrlPatterns();
+//		ConfigLoader.loadUrlPatterns();
 		I18n.load();
-		Tpl.load(SystemGlobals.getValue(ConfigKeys.TEMPLATES_MAPPING));
+		logger.info("I 18 N   LOADED .");
+//		Tpl.load(SystemGlobals.getValue(ConfigKeys.TEMPLATES_MAPPING));
 
 		// BB Code
 		BBCodeRepository.setBBCollection(new BBCodeHandler().parse());

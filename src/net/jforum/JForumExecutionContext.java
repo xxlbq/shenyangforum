@@ -68,9 +68,9 @@ import freemarker.template.SimpleHash;
  */
 public class JForumExecutionContext
 {
-    private static ThreadLocal userData = new ThreadLocal();
 	private static Logger logger = Logger.getLogger(JForumExecutionContext.class);
-	private static Configuration templateConfig;
+    private static ThreadLocal userData = new ThreadLocal();
+//	private static Configuration templateConfig;
 	
 	private Connection conn;
     private ForumContext forumContext;
@@ -110,19 +110,19 @@ public class JForumExecutionContext
 	 * Sets the default template configuration 
 	 * @param config The template configuration to set
 	 */
-	public static void setTemplateConfig(Configuration config)
-	{
-		templateConfig = config;
-	}
+//	public static void setTemplateConfig(Configuration config)
+//	{
+//		templateConfig = config;
+//	}
 	
 	/**
 	 * Gets a reference to the default template configuration settings.
 	 * @return The template configuration instance
 	 */
-	public static Configuration templateConfig()
-	{
-		return templateConfig;
-	}
+//	public static Configuration templateConfig()
+//	{
+//		return templateConfig;
+//	}
 	
 	/**
 	 * Sets the execution context

@@ -144,7 +144,7 @@ public class JForumBaseServlet extends HttpServlet
 				templateCfg.setTemplateUpdateDelay(3600);
 			}
 
-			JForumExecutionContext.setTemplateConfig(templateCfg);
+//			JForumExecutionContext.setTemplateConfig(templateCfg);
 		}
 		catch (Exception e) {
 			throw new ForumStartupException("Error while starting JForum", e);
