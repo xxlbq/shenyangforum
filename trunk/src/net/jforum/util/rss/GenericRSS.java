@@ -68,17 +68,18 @@ public class GenericRSS implements RSSAware
 	{
 		try
 		{
-			Template t = JForumExecutionContext.templateConfig().getTemplate(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)
-					+ "/rss_template.htm");
-			StringWriter sw = new StringWriter();
+//			Template t = JForumExecutionContext.templateConfig().getTemplate(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)
+//					+ "/rss_template.htm");
+//			StringWriter sw = new StringWriter();
+//
+//			SimpleHash templateContext = JForumExecutionContext.getTemplateContext();
+//
+//			templateContext.put("encoding", SystemGlobals.getValue(ConfigKeys.ENCODING));
+//			templateContext.put("rss", this.rss);
+//			t.process(templateContext, sw);
 
-			SimpleHash templateContext = JForumExecutionContext.getTemplateContext();
-
-			templateContext.put("encoding", SystemGlobals.getValue(ConfigKeys.ENCODING));
-			templateContext.put("rss", this.rss);
-			t.process(templateContext, sw);
-
-			return sw.toString();
+//			return sw.toString();
+			return null;
 		}
 		catch (Exception e)
 		{

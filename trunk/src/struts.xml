@@ -4,11 +4,11 @@
 <struts>
 	<include file="struts-default.xml" />
 	
-	<constant name="struts.devMode" value="true"/>
+<!--	<constant name="struts.devMode" value="true"/>-->
 	<package name="forums" extends="struts-default">
 
 		<action name="list" class="net.jforum.s2action.JForumAction" method="list">
-			<result name="success" type="freemarker" >/templates/default/forum_list.htm </result>
+			<result name="success" type="freemarker" >/templates/default/forum_list.ftl</result>
 		</action>
 
 	</package>

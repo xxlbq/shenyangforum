@@ -1,4 +1,4 @@
-<#include "header.htm"/>
+<#include "header.ftl"/>
 <link rel="alternate" type="application/rss+xml" title="RSS" href="${contextPath}/rss/recentTopics${extension}" />
 
 <table width="100%" align="center">
@@ -7,7 +7,7 @@
 			<table cellspacing="0" cellpadding="2" width="100%" align="center" border="0">
 				<tr>
 					<td valign="bottom" align="left">
-						<#if logged><span class="gensmall">${I18n.getMessage("ForumListing.lastVisit")}: ${lastVisit}</span><br /></#if>
+						<#if Request.forumdata.logged><span class="gensmall">${I18n.getMessage("ForumListing.lastVisit")}: ${lastVisit}</span><br /></#if>
 						<span class="gensmall">${I18n.getMessage("ForumListing.date")}: ${now}</span><br />
 						<span class="forumlink"><a class="forumlink" href="${JForumContext.encodeURL("/forums/list")}">${I18n.getMessage("ForumListing.forumIndex")}</a></span>
 					</td>

@@ -2,6 +2,7 @@ package net.jforum.s2action;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
@@ -16,7 +17,6 @@ import net.jforum.Command;
 import net.jforum.ControllerUtils;
 import net.jforum.ForumStartup;
 import net.jforum.JForumExecutionContext;
-import net.jforum.JForumInitServlet;
 import net.jforum.SessionFacade;
 import net.jforum.context.JForumContext;
 import net.jforum.context.RequestContext;
@@ -28,10 +28,8 @@ import net.jforum.entities.MostUsersEverOnline;
 import net.jforum.entities.UserSession;
 import net.jforum.exceptions.ExceptionWriter;
 import net.jforum.exceptions.ForumException;
-import net.jforum.exceptions.TemplateNotFoundException;
 import net.jforum.repository.BanlistRepository;
 import net.jforum.repository.ForumRepository;
-import net.jforum.repository.ModulesRepository;
 import net.jforum.repository.SecurityRepository;
 import net.jforum.repository.Tpl;
 import net.jforum.util.I18n;
@@ -77,16 +75,16 @@ public class JForumAction extends ActionSupport {
 	protected ResponseContext response;
 	protected SimpleHash context;
 	
-	protected void setTemplateName(String templateName)
-	{
-		this.templateName = Tpl.name(templateName);
-		
-		logger.info("templateName in cache :"+templateName);
-		
-		this.templateName = "forum_list.htm";
-		
-		logger.info("templateName:"+templateName);
-	}
+//	protected void setTemplateName(String templateName)
+//	{
+//		this.templateName = Tpl.name(templateName);
+//		
+//		logger.info("templateName in cache :"+templateName);
+//		
+//		this.templateName = "forum_list.ftl";
+//		
+//		logger.info("templateName:"+templateName);
+//	}
 	
 	protected void ignoreAction()
 	{
@@ -196,6 +194,9 @@ public class JForumAction extends ActionSupport {
 					context.put("response", response);
 					
 					out = this.processCommand(out, request, response, encoding, context);
+					
+					req.setAttribute("forumdata", context);
+					
 				}
 			}
 //		}
@@ -212,7 +213,7 @@ public class JForumAction extends ActionSupport {
 	{
 		// Here we go, baby
 //		Command c = this.retrieveCommand(moduleClass);
-		Template template = process(request, response, context);
+//		Template template = process(request, response, context);
 
 		if (JForumExecutionContext.getRedirectTo() == null) {
 			String contentType = JForumExecutionContext.getContentType();
@@ -223,16 +224,32 @@ public class JForumAction extends ActionSupport {
 			
 			response.setContentType(contentType);
 			
-			// Binary content are expected to be fully 
-			// handled in the action, including outputstream
-			// manipulation
-			if (!JForumExecutionContext.isCustomContent()) {
-				out = new BufferedWriter(new OutputStreamWriter(response.getOutputStream(), encoding));
-				template.process(JForumExecutionContext.getTemplateContext(), out);
-				out.flush();
-			}
+////			OutputStream p =response.getOutputStream();
+//			
+//			out = response.getWriter();
+//			
+//			SimpleHash data = JForumExecutionContext.getTemplateContext();
+//			
+//			// Binary content are expected to be fully 
+//			// handled in the action, including outputstream
+//			// manipulation
+//			if (!JForumExecutionContext.isCustomContent()) {
+////				out = new BufferedWriter(new OutputStreamWriter(p , encoding));
+//				template.process(data, out);
+//				
+////				utput.flush();
+////				out.flush();
+//				
+//			}
+			
+			
+//			OutputStream output = response.getOutputStream();
+//			while ((len = inputStream.read(b, 0, 1024)) != -1) {
+//			output.write(b,0,len); 
+			//return null¾ÍÐÐÁË¡£ 
 		}
 		
+//		return null;
 		return out;
 	}
 	
@@ -260,12 +277,12 @@ public class JForumAction extends ActionSupport {
 		
 		forumList();
 		
-		if (JForumExecutionContext.getRedirectTo() != null) {
-			this.setTemplateName(TemplateKeys.EMPTY);
-		}
-		else if (request.getAttribute("template") != null) {
-			this.setTemplateName((String)request.getAttribute("template"));
-		}
+//		if (JForumExecutionContext.getRedirectTo() != null) {
+//			this.setTemplateName(TemplateKeys.EMPTY);
+//		}
+//		else if (request.getAttribute("template") != null) {
+//			this.setTemplateName((String)request.getAttribute("template"));
+//		}
 		
 		if (JForumExecutionContext.isCustomContent()) {
 			return null;
@@ -275,24 +292,26 @@ public class JForumAction extends ActionSupport {
 //			throw new TemplateNotFoundException("Template for action " + action + " is not defined");
 //		}
 
-        try {
-        	
-        	logger.info("1:"+new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)));
-        	logger.info("2:"+this.templateName);
-        	
-            return JForumExecutionContext.templateConfig().getTemplate(
-                new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)).
-                append('/').append(this.templateName).toString());
-        }
-        catch (IOException e) {
-            throw new ForumException( e);
-        }
+//        try {
+//        	
+//        	logger.info("1:"+new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)));
+//        	logger.info("2:"+this.templateName);
+//        	
+//            return JForumExecutionContext.templateConfig().getTemplate(
+//                new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)).
+//                append('/').append(this.templateName).toString());
+//        }
+//        catch (IOException e) {
+//            throw new ForumException( e);
+//        }
+		
+		return null;
     }
 	
 	
 	public void forumList()
 	{
-		this.setTemplateName(TemplateKeys.FORUMS_LIST);
+//		this.setTemplateName(TemplateKeys.FORUMS_LIST);
 
 		this.context.put("allCategories", ForumCommon.getAllCategoriesAndForums(true));
 		this.context.put("topicsPerPage", new Integer(SystemGlobals.getIntValue(ConfigKeys.TOPICS_PER_PAGE)));
