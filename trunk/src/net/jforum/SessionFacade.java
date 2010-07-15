@@ -51,6 +51,9 @@ import java.util.Map;
 
 import net.jforum.cache.CacheEngine;
 import net.jforum.cache.Cacheable;
+import net.jforum.context.ForumContext;
+import net.jforum.context.RequestContext;
+import net.jforum.context.SessionContext;
 import net.jforum.dao.DataAccessDriver;
 import net.jforum.entities.UserSession;
 import net.jforum.repository.SecurityRepository;
@@ -283,8 +286,31 @@ public class SessionFacade implements Cacheable
 	 * @return The <code>UserSession</code> associated to the user's session
 	 */
 	public static UserSession getUserSession()
+	
+	
 	{
-		return getUserSession(JForumExecutionContext.getRequest().getSessionContext().getId());
+
+		String id = null;
+		if(JForumExecutionContext.exists()){
+			JForumExecutionContext jec = JForumExecutionContext.get();
+			RequestContext r = jec.getRequest();
+			logger.info("RequestContext--:"+r);
+			
+			SessionContext s= r.getSessionContext();
+			logger.info("SessionContext--:"+s);
+			id = s.getId();
+			
+			logger.info("id--:"+id);
+		}else{
+			
+			ForumContext fc =JForumExecutionContext.getForumContext();
+			SessionContext sc = fc.getRequest().getSessionContext();
+			
+			id = sc.getId();
+		}
+		
+//		return getUserSession(JForumExecutionContext.getRequest().getSessionContext().getId());
+		return getUserSession(id);
 	}
 	
 	/**

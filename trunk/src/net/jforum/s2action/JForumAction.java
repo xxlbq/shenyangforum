@@ -125,8 +125,8 @@ public class JForumAction extends ActionSupport {
 	{
 		Writer out = null;
 		JForumContext forumContext = null;
-		RequestContext request = null;
-		ResponseContext response = null;
+//		RequestContext request = null;
+//		ResponseContext response = null;
 		String encoding = SystemGlobals.getValue(ConfigKeys.ENCODING);
 
 		try {
@@ -148,7 +148,7 @@ public class JForumAction extends ActionSupport {
             JForumExecutionContext.set(ex);
 
 			// Setup stuff
-			SimpleHash context = JForumExecutionContext.getTemplateContext();
+			context = JForumExecutionContext.getTemplateContext();
 			
 			ControllerUtils utils = new ControllerUtils();
 			utils.refreshSession();
@@ -214,7 +214,7 @@ public class JForumAction extends ActionSupport {
 		// Here we go, baby
 //		Command c = this.retrieveCommand(moduleClass);
 //		Template template = process(request, response, context);
-
+		forumList();
 		if (JForumExecutionContext.getRedirectTo() == null) {
 			String contentType = JForumExecutionContext.getContentType();
 			
@@ -337,13 +337,13 @@ public class JForumAction extends ActionSupport {
 		// Check for an optional language parameter
 		UserSession currentUser = SessionFacade.getUserSession();
 
-		if (currentUser.getUserId() == aid) {
-			String lang = this.request.getParameter("lang");
-
-			if (lang != null && I18n.languageExists(lang)) {
-				currentUser.setLang(lang);
-			}
-		}
+//		if (currentUser.getUserId() == aid) {
+//			String lang = this.request.getParameter("lang");
+//
+//			if (lang != null && I18n.languageExists(lang)) {
+//				currentUser.setLang(lang);
+//			}
+//		}
 
 		// If there are only guest users, then just register
 		// a single one. In any other situation, we do not
@@ -368,7 +368,7 @@ public class JForumAction extends ActionSupport {
 
 		// Most users ever online
 		MostUsersEverOnline mostUsersEverOnline = ForumRepository.getMostUsersEverOnline();
-
+		logger.info("mostUsersEverOnline:"+mostUsersEverOnline);
 		if (totalOnlineUsers > mostUsersEverOnline.getTotal()) {
 			mostUsersEverOnline.setTotal(totalOnlineUsers);
 			mostUsersEverOnline.setTimeInMillis(System.currentTimeMillis());
@@ -421,7 +421,7 @@ public class JForumAction extends ActionSupport {
 		}
 		
 		String redirectTo = JForumExecutionContext.getRedirectTo();
-		JForumExecutionContext.finish();
+//		JForumExecutionContext.finish();
 		
 		if (redirectTo != null) {
 			if (forumContext != null && forumContext.isEncodingDisabled()) {

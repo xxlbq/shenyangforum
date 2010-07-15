@@ -49,7 +49,7 @@ Modifications by JForum Team
 									<a id="latest" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/recentTopics/list")}">${Request.forumdata.I18n.getMessage("ForumBase.recentTopics")}</a> &nbsp;
 									<img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_recentTopics.gif" alt="[Hottest Topics]" />
 									<a id="hottest" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/hottestTopics/list")}">${Request.forumdata.I18n.getMessage("ForumBase.hottestTopics")}</a> &nbsp;
-									<img src="${Request.forumdata.contextPath}/templates/${templateName}/images/icon_mini_members.gif" alt="[Members]" />&nbsp;
+									<img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_members.gif" alt="[Members]" />&nbsp;
 									<a id="latest2" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/list")}">${Request.forumdata.I18n.getMessage("ForumBase.usersList")}</a> &nbsp;
 									<span class="mainmenu"> <img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_groups.gif" alt="[Groups]" />&nbsp;<a id="backtosite" class="mainmenu" href="${Request.forumdata.homepageLink}">${Request.forumdata.I18n.getMessage("ForumBase.backToSite")}</a>&nbsp;
 									
@@ -74,12 +74,12 @@ Modifications by JForum Team
 										</a>&nbsp;
 										</span>
 
-										<#if !sso>
+										<#if ! Request.forumdata.sso>
 											<a id="logout" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/logout")}"><img src="${contextPath}/templates/${templateName}/images/icon_mini_login.gif" border="0" alt="[Login]" /> ${Request.forumdata.I18n.getMessage("ForumBase.logout")} [${session.username}] </a></span>
 										</#if>
 									</#if>
 	
-									<#if !logged && !sso>
+									<#if !Request.forumdata.logged && !Request.forumdata.sso>
 										<a id="register" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/insert")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_register.gif" border="0" alt="[Register]" /> ${Request.forumdata.I18n.getMessage("ForumBase.register")}</a>&nbsp;/&nbsp;</span>
 										<a id="login" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/login")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_login.gif" border="0" alt="[Login]" /> ${Request.forumdata.I18n.getMessage("ForumBase.login")}</a>&nbsp; </span>
 									</#if>
