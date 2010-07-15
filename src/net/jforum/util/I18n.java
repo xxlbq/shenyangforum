@@ -338,13 +338,13 @@ public class I18n
 	 */
 	public static String getUserLanguage()
 	{
-		UserSession us = SessionFacade.getUserSession();
+//		UserSession us = SessionFacade.getUserSession();
 
-		if (us == null || us.getLang() == null || us.getLang().trim().equals("")) {
+//		if (us == null || us.getLang() == null || us.getLang().trim().equals("")) {
 			return defaultName;
-		}
-
-		return us.getLang();
+//		}
+//
+//		return us.getLang();
 	}
 
 	/**

@@ -55,6 +55,12 @@ import net.jforum.util.preferences.SystemGlobals;
  */
 public class MostUsersEverOnline implements Serializable
 {
+	@Override
+	public String toString() {
+		return "MostUsersEverOnline [date=" + date + ", timeInMillis="
+				+ timeInMillis + ", total=" + total + "]";
+	}
+
 	private int total;
 	private String date;
 	private long timeInMillis;
