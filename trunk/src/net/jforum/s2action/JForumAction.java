@@ -336,7 +336,7 @@ public class JForumAction extends ActionSupport {
 
 		// Check for an optional language parameter
 		UserSession currentUser = SessionFacade.getUserSession();
-
+		this.context.put("SessionUserId",currentUser.getUserId());
 //		if (currentUser.getUserId() == aid) {
 //			String lang = this.request.getParameter("lang");
 //
@@ -421,7 +421,7 @@ public class JForumAction extends ActionSupport {
 		}
 		
 		String redirectTo = JForumExecutionContext.getRedirectTo();
-//		JForumExecutionContext.finish();
+		JForumExecutionContext.finish();
 		
 		if (redirectTo != null) {
 			if (forumContext != null && forumContext.isEncodingDisabled()) {

@@ -82,7 +82,7 @@ public class Category  implements Serializable
 	private String name;
 	private Map forumsIdMap = new HashMap();
 	private Set forums = new TreeSet(new ForumOrderComparator());
-		
+//	private List 
 	public Category() {}
 	
 	public Category(int id) {
@@ -299,7 +299,7 @@ public class Category  implements Serializable
 	 */
 	public Collection getForums()
 	{
-		if (this.forums.size() == 0) {
+		if (this.forums.size() != 0) {
 			return this.forums;
 		}
 
@@ -313,7 +313,22 @@ public class Category  implements Serializable
 	 * @see #getForums()
      * @param userId int
 	 */
-	public Collection getForums(int userId) 
+//	public Collection getForums(int userId) 
+//	{
+//		PermissionControl pc = SecurityRepository.get(userId);
+//		List forums = new ArrayList();
+//
+//		for (Iterator iter = this.forums.iterator(); iter.hasNext(); ) {
+//			Forum f = (Forum)iter.next();
+//			if (pc.canAccess(SecurityConstants.PERM_FORUM, Integer.toString(f.getId()))) {
+//				forums.add(f);
+//			}
+//		}
+//		
+//		return forums;
+//	}
+	
+	public List getForums(int userId) 
 	{
 		PermissionControl pc = SecurityRepository.get(userId);
 		List forums = new ArrayList();
