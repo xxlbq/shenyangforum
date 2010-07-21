@@ -34,8 +34,9 @@
 						<td class="catright" align="right" colspan="3">&nbsp;</td>
 					</tr>
 
-					<#list category.getForums() as forum>
-					<#assign lpi = Request.forumdata.forumRepository.getLastPostInfo(forum.id)/>
+					<#list (category.getFlist()) as forum>
+					
+					<#assign lpi = forum.lastPostInfo />
 					<tr>
 						<td class="row1" valign="middle" align="center" height="50">
 						<#if forum.unread>

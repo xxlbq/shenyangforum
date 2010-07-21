@@ -65,7 +65,7 @@ public class Forum implements Serializable
 	private int lastPostId;
 	private boolean moderated;
 	private boolean unread;
-	private LastPostInfo lpi;
+	private LastPostInfo lastPostInfo;
 
 	public Forum() { }
 	
@@ -85,15 +85,15 @@ public class Forum implements Serializable
 		this.totalPosts = f.getTotalPosts();
 		this.totalTopics = f.getTotalTopics();
 		this.unread = f.getUnread();
-		this.lpi = f.getLastPostInfo();
+		this.lastPostInfo = f.getLastPostInfo();
 	}
 	
 	public void setLastPostInfo(LastPostInfo lpi) {
-		this.lpi = lpi;
+		this.lastPostInfo = lpi;
 	}
 	
 	public LastPostInfo getLastPostInfo() {
-		return this.lpi;
+		return this.lastPostInfo;
 	}
 	
 	public List getModeratorList() 
@@ -276,11 +276,23 @@ public class Forum implements Serializable
 	{
 		return this.id;
 	}
+
+	@Override
+	public String toString() {
+		return "Forum [description=" + description + ", id=" + id
+				+ ", idCategories=" + idCategories + ", lastPostId="
+				+ lastPostId + ", lastPostInfo=" + lastPostInfo
+				+ ", moderated=" + moderated + ", name=" + name + ", order="
+				+ order + ", totalPosts=" + totalPosts + ", totalTopics="
+				+ totalTopics + ", unread=" + unread + "]";
+	}
 	
 	/** 
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString() {
-		return "[" + this.name + ", id=" + this.id + ", order=" + this.order + "]";
-	}
+//	public String toString() {
+//		return "[" + this.name + ", id=" + this.id + ", order=" + this.order + "]";
+//	}
+	
+	
 }

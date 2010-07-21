@@ -44,6 +44,7 @@ package net.jforum.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,9 +53,12 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.log4j.Logger;
+
 import net.jforum.SessionFacade;
 import net.jforum.exceptions.ForumOrderChangedException;
 import net.jforum.repository.SecurityRepository;
+import net.jforum.s2action.JForumAction;
 import net.jforum.security.PermissionControl;
 import net.jforum.security.SecurityConstants;
 import net.jforum.util.ForumOrderComparator;
@@ -76,14 +80,39 @@ import net.jforum.util.ForumOrderComparator;
  */
 public class Category  implements Serializable
 {
+	private static Logger logger = Logger.getLogger(Category.class);
 	private int id;
 	private int order;
 	private boolean moderated;
 	private String name;
 	private Map forumsIdMap = new HashMap();
 	private Set forums = new TreeSet(new ForumOrderComparator());
-//	private List 
+
+	private List flist = Arrays.asList( forums.toArray(new Forum[forums.size()] ));
+	
+	public List getFlist() {
+		logger.info("Category size:"+flist.size());
+		return flist;
+	}
+
+
+
+
+
+	public void setFlist(List flist) {
+		this.flist = flist;
+	}
+
+
+
+
+
+	//	private List 
 	public Category() {}
+	
+	
+	
+	
 	
 	public Category(int id) {
 		this.id = id;
@@ -306,6 +335,8 @@ public class Category  implements Serializable
 		return this.getForums(SessionFacade.getUserSession().getUserId());
 	}
 
+	
+	
 	/**
 	 * Gets all forums from this category.
 	 * 

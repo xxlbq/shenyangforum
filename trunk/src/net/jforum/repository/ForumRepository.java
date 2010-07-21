@@ -77,6 +77,7 @@ import net.jforum.security.SecurityConstants;
 import net.jforum.util.CategoryOrderComparator;
 import net.jforum.util.preferences.ConfigKeys;
 import net.jforum.util.preferences.SystemGlobals;
+import net.jforum.view.forum.common.ForumCommon;
 
 /**
  * Repository for the forums of the System.
@@ -262,10 +263,24 @@ public class ForumRepository implements Cacheable
 		for (Iterator iter = categoriesSet.iterator(); iter.hasNext(); ) {
 			Category c = getCategory(pc, ((Category)iter.next()).getId());
 			
+			for (Iterator tmpIterator = c.getForums().iterator(); tmpIterator.hasNext(); ) {
+				Forum f = (Forum)tmpIterator.next();
+				
+//				LastPostInfo lp = fr.getLastPostInfo(f);
+//				f.setLastPostInfo(lp);
+				logger.info(">>>>>>>>>> forum:"+f);
+				f= ForumRepository.getForum(f.getId());
+				logger.info(">>>>>>>>>> forum:"+f);
+//				ForumCommon.checkUnreadPosts(uf, tracking, lastVisit);
+			}
+			
 			if (c != null) {
 				l.add(c);
 			}
 		}
+		
+		
+
 		
 		return l;
 	}
