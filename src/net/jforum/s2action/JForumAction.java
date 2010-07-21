@@ -326,7 +326,7 @@ public class JForumAction extends ActionSupport {
 		this.context.put("now", df.format(gc.getTime()));
 
 		this.context.put("lastVisit", df.format(SessionFacade.getUserSession().getLastVisit()));
-		this.context.put("forumRepository", new ForumRepository());
+//		this.context.put("forumRepository", new ForumRepository());
 
 		// Online Users
 		this.context.put("totalOnlineUsers", new Integer(SessionFacade.size()));
@@ -421,7 +421,7 @@ public class JForumAction extends ActionSupport {
 		}
 		
 		String redirectTo = JForumExecutionContext.getRedirectTo();
-		JForumExecutionContext.finish();
+//		JForumExecutionContext.finish();
 		
 		if (redirectTo != null) {
 			if (forumContext != null && forumContext.isEncodingDisabled()) {
