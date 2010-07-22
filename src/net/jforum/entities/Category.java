@@ -86,22 +86,34 @@ public class Category  implements Serializable
 	private boolean moderated;
 	private String name;
 	private Map forumsIdMap = new HashMap();
-	private Set forums = new TreeSet(new ForumOrderComparator());
+//	private Set forums = new TreeSet(new ForumOrderComparator());
+	private List forums = new ArrayList();
 
-	private List flist = Arrays.asList( forums.toArray(new Forum[forums.size()] ));
+	public List takeForums(){
+		
+		for (Object o: forums) {
+			logger.info((Forum)o) ; 
+		}
+		
+		return this.forums;
+	}
 	
-	public List getFlist() {
-		logger.info("Category size:"+flist.size());
-		return flist;
-	}
-
-
-
-
-
-	public void setFlist(List flist) {
-		this.flist = flist;
-	}
+//	private List flist = Arrays.asList( forums.toArray(new Forum[forums.size()] ));
+//	
+//	public List getFlist() {
+//		
+//		logger.info("Category forums size:"+forums.size());
+//		logger.info("Category size:"+flist.size());
+//		return flist;
+//	}
+//
+//
+//
+//
+//
+//	public void setFlist(List flist) {
+//		this.flist = flist;
+//	}
 
 
 
@@ -218,7 +230,9 @@ public class Category  implements Serializable
 					+ "first");
 		}
 		
-		Set tmpSet = new TreeSet(new ForumOrderComparator());
+//		Set tmpSet = new TreeSet(new ForumOrderComparator());
+		List tmpSet = new ArrayList();
+		
 		tmpSet.addAll(this.forums);
 		tmpSet.remove(currentForum);
 		tmpSet.add(forum);
@@ -240,7 +254,8 @@ public class Category  implements Serializable
 		Forum current = this.getForum(forum.getId());
 		Forum currentAtOrder = this.findByOrder(forum.getOrder());
 		
-		Set tmpSet = new TreeSet(new ForumOrderComparator());
+//		Set tmpSet = new TreeSet(new ForumOrderComparator());
+		List tmpSet = new ArrayList();
 		tmpSet.addAll(this.forums);
 		
 		// Remove the forum in the current order
@@ -326,13 +341,15 @@ public class Category  implements Serializable
 	 * @return All forums, regardless it is accessible 
 	 * to the user or not.
 	 */
-	public Collection getForums()
+	public List getForums()
 	{
+		logger.info("1  getForums forums size:"+forums.size());
 		if (this.forums.size() != 0) {
 			return this.forums;
 		}
-
-		return this.getForums(SessionFacade.getUserSession().getUserId());
+		List r = getForums(SessionFacade.getUserSession().getUserId());
+		logger.info("2  getForums forums size:"+r.size());
+		return r;
 	}
 
 	
