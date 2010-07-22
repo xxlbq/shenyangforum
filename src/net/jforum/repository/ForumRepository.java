@@ -260,16 +260,19 @@ public class ForumRepository implements Cacheable
 			}
 		}
 		
+		ForumRepository fr=new ForumRepository();
+		
 		for (Iterator iter = categoriesSet.iterator(); iter.hasNext(); ) {
 			Category c = getCategory(pc, ((Category)iter.next()).getId());
-			
+			logger.info(">>>>>>>>>> Category forum:"+c.getForums().size());
 			for (Iterator tmpIterator = c.getForums().iterator(); tmpIterator.hasNext(); ) {
 				Forum f = (Forum)tmpIterator.next();
 				
-//				LastPostInfo lp = fr.getLastPostInfo(f);
-//				f.setLastPostInfo(lp);
+
 				logger.info(">>>>>>>>>> forum:"+f);
 				f= ForumRepository.getForum(f.getId());
+				LastPostInfo lp = fr.getLastPostInfo(f);
+				f.setLastPostInfo(lp);
 				logger.info(">>>>>>>>>> forum:"+f);
 //				ForumCommon.checkUnreadPosts(uf, tracking, lastVisit);
 			}
