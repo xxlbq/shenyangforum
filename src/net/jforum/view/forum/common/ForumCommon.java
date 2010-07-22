@@ -134,6 +134,8 @@ public class ForumCommon
 		for (Iterator iter = categories.iterator(); iter.hasNext(); ) {
 			Category c = new Category((Category)iter.next());
 			
+			logger.info(">>>>>>>>>> forum size:"+c.getForums().size());
+			
 			for (Iterator tmpIterator = c.getForums().iterator(); tmpIterator.hasNext(); ) {
 				Forum f = (Forum)tmpIterator.next();
 				logger.info(">>>>>>>>>> forum:"+f.toString());
