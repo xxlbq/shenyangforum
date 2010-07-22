@@ -34,7 +34,7 @@
 						<td class="catright" align="right" colspan="3">&nbsp;</td>
 					</tr>
 
-					<#list (category.getFlist()) as forum>
+					<#list (category.takeForums()) as forum >
 					
 					<#assign lpi = forum.lastPostInfo />
 					<tr>
