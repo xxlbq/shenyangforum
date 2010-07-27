@@ -10,7 +10,9 @@
 		<action name="list" class="net.jforum.s2action.JForumAction" method="list">
 			<result name="success" type="freemarker" >/templates/default/forum_list.ftl</result>
 		</action>
-
+		<action name="show" class="net.jforum.s2action.JForumAction" method="show">
+			<result name="success" type="freemarker" >/templates/default/forum_show.ftl</result>
+		</action>
 	</package>
 	
 <!--	-->

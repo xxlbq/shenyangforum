@@ -89,14 +89,11 @@ public class JForumContext implements ForumContext
 		return isBot;
 	}
 
+
+
 	public String encodeURL(String url)
 	{
-		return this.encodeURL(url, servletExtension);
-	}
-
-	public String encodeURL(String url, String extension)
-	{
-		String ucomplete = contextPath + url + extension;
+		String ucomplete = contextPath + url ;
 
 		if (isEncodingDisabled()) {
 			return ucomplete;
@@ -104,6 +101,11 @@ public class JForumContext implements ForumContext
 
 		return response.encodeURL(ucomplete);
 	}
+	
+	
+
+
+	
 
 	public boolean isEncodingDisabled()
 	{
@@ -119,4 +121,16 @@ public class JForumContext implements ForumContext
 	{
 		return response;
 	}
+
+	public String encodeURL(String url, String extension)
+	{
+		String ucomplete = contextPath + url + extension;
+
+		if (isEncodingDisabled()) {
+			return ucomplete;
+		}
+
+		return response.encodeURL(ucomplete);
+	}
+
 }

@@ -46,7 +46,7 @@
 						</#if>
 						</td>
 						<td class="row1" width="100%" height="50">
-							<span class="forumlink"><a class="forumlink" href="${Request.forumdata.JForumContext.encodeURL("/forums/show/${forum.id}")}">${forum.name?html}</a></span><br />
+							<span class="forumlink"><a class="forumlink" href="${Request.forumdata.JForumContext.encodeURL("/forums/show.action?fid=${forum.id}")}">${forum.name?html}</a></span><br />
 							<span class="genmed">
 								${forum.description?default("")}
 								<#if forum.isModerated()><br />

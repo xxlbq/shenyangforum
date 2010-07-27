@@ -1,9 +1,9 @@
 <#macro littlePostPagination topicId postsPerPage totalReplies>
-	[ <img class="icon_latest_reply" src="${contextPath}/images/transp.gif" alt="" /> ${I18n.getMessage("goToPage")}: 
+	[ <img class="icon_latest_reply" src="${Request.forumdata.contextPath}/images/transp.gif" alt="" /> ${Request.forumdata.I18n.getMessage("goToPage")}: 
 
-	<#assign totalPostPages = ((totalReplies + 1) / postsPerPage)?int/>
+	<#assign totalPostPages = ((Request.forumdata.totalReplies + 1) / Request.forumdata.postsPerPage)?int/>
 
-	<#if (((totalReplies + 1) % postsPerPage) > 0)>
+	<#if (((Request.forumdata.totalReplies + 1) % Request.forumdata.postsPerPage) > 0)>
 		<#assign totalPostPages = (totalPostPages + 1)/>
 	</#if>
 
@@ -47,7 +47,7 @@
 <#-- Pagination macro base code inspired from PHPBB's generate_pagination() function -->
 <#-- ------------------------------------------------------------------------------- -->
 <#macro doPagination action id=-1>
-	<#if (totalRecords > recordsPerPage)>
+	<#if (Request.forumdata.totalRecords > Request.forumdata.recordsPerPage)>
 		<div class="pagination">
 		<#assign link = ""/>
 
