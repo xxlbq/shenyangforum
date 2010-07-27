@@ -304,9 +304,13 @@ public class SessionFacade implements Cacheable
 		}else{
 			
 			ForumContext fc =JForumExecutionContext.getForumContext();
-			SessionContext sc = fc.getRequest().getSessionContext();
-			
-			id = sc.getId();
+			if(fc == null){
+//				id = 
+			}else{
+				SessionContext sc = fc.getRequest().getSessionContext();
+				id = sc.getId();
+			}
+
 		}
 		
 //		return getUserSession(JForumExecutionContext.getRequest().getSessionContext().getId());

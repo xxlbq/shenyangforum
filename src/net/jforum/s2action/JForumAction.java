@@ -7,7 +7,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +25,11 @@ import net.jforum.context.RequestContext;
 import net.jforum.context.ResponseContext;
 import net.jforum.context.web.WebRequestContext;
 import net.jforum.context.web.WebResponseContext;
+import net.jforum.dao.DataAccessDriver;
+import net.jforum.dao.ForumDAO;
+import net.jforum.dao.ModerationDAO;
 import net.jforum.entities.Banlist;
+import net.jforum.entities.Forum;
 import net.jforum.entities.MostUsersEverOnline;
 import net.jforum.entities.UserSession;
 import net.jforum.exceptions.ExceptionWriter;
@@ -32,11 +38,16 @@ import net.jforum.repository.BanlistRepository;
 import net.jforum.repository.ForumRepository;
 import net.jforum.repository.SecurityRepository;
 import net.jforum.repository.Tpl;
+import net.jforum.security.SecurityConstants;
 import net.jforum.util.I18n;
 import net.jforum.util.preferences.ConfigKeys;
 import net.jforum.util.preferences.SystemGlobals;
 import net.jforum.util.preferences.TemplateKeys;
+import net.jforum.view.forum.ModerationHelper;
 import net.jforum.view.forum.common.ForumCommon;
+import net.jforum.view.forum.common.PostCommon;
+import net.jforum.view.forum.common.TopicsCommon;
+import net.jforum.view.forum.common.ViewCommon;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -75,6 +86,9 @@ public class JForumAction extends ActionSupport {
 	protected ResponseContext response;
 	protected SimpleHash context;
 	
+	
+	private int fid ;
+	
 //	protected void setTemplateName(String templateName)
 //	{
 //		this.templateName = Tpl.name(templateName);
@@ -85,7 +99,9 @@ public class JForumAction extends ActionSupport {
 //		
 //		logger.info("templateName:"+templateName);
 //	}
-	
+
+
+
 	protected void ignoreAction()
 	{
 		this.ignoreAction = true;
@@ -93,13 +109,31 @@ public class JForumAction extends ActionSupport {
     
     
     
-    public String list() {
+    public int getFid() {
+		return fid;
+	}
+
+
+
+	public void setFid(int fid) {
+		this.fid = fid;
+	}
+
+
+
+	public String list() {
     	logger.info("===========>  list method fired  <===========");
     	HttpServletRequest request = ServletActionContext.getRequest(); 
     	HttpServletResponse response = ServletActionContext.getResponse(); 
+    	String s = null;
     	try {
 //    		forumList();
-			service(request, response);
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+				forumList();
+			}else if(s.equalsIgnoreCase(ERROR)){
+				
+			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,11 +142,33 @@ public class JForumAction extends ActionSupport {
 			e.printStackTrace();
 		}
 //    	name = "Hello, " + name + "!"; 
-        return SUCCESS;
+        return s;
     }
     
 
-
+    public String show() {
+    	logger.info("===========>  show method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse(); 
+    	String s = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+				forumShow();
+			}else if(s.equalsIgnoreCase(ERROR)){
+				
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//    	name = "Hello, " + name + "!"; 
+        return s;
+    }
     
 	
 	
@@ -121,7 +177,7 @@ public class JForumAction extends ActionSupport {
 	
 	
 	
-	public void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException
+	public String service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException
 	{
 		Writer out = null;
 		JForumContext forumContext = null;
@@ -186,6 +242,7 @@ public class JForumAction extends ActionSupport {
 				
 				if (shouldBan && SystemGlobals.getBoolValue(ConfigKeys.BANLIST_SEND_403FORBIDDEN)) {
 					response.sendError(HttpServletResponse.SC_FORBIDDEN);
+					return ERROR;
 				}
 				else {
 					context.put("language", I18n.getUserLanguage());
@@ -193,120 +250,125 @@ public class JForumAction extends ActionSupport {
 					context.put("request", req);
 					context.put("response", response);
 					
-					out = this.processCommand(out, request, response, encoding, context);
-					
+//					out = this.processCommand(out, request, response, encoding, context);
 					req.setAttribute("forumdata", context);
 					
+					return SUCCESS;
+					
 				}
+				
 			}
 //		}
 		catch (Exception e) {
 			this.handleException(out, response, encoding, e, request);
+			return ERROR;
 		}
 		finally {
 			this.handleFinally(out, forumContext, response);
+//			return SUCCESS;
+			
 		}		
 	}
 	
-	private Writer processCommand(Writer out, RequestContext request, ResponseContext response, 
-			String encoding, SimpleHash context) throws Exception
-	{
-		// Here we go, baby
-//		Command c = this.retrieveCommand(moduleClass);
-//		Template template = process(request, response, context);
-		forumList();
-		if (JForumExecutionContext.getRedirectTo() == null) {
-			String contentType = JForumExecutionContext.getContentType();
-			
-			if (contentType == null) {
-				contentType = "text/html; charset=" + encoding;
-			}
-			
-			response.setContentType(contentType);
-			
-////			OutputStream p =response.getOutputStream();
+//	private Writer processCommand(Writer out, RequestContext request, ResponseContext response, 
+//			String encoding, SimpleHash context) throws Exception
+//	{
+//		// Here we go, baby
+////		Command c = this.retrieveCommand(moduleClass);
+////		Template template = process(request, response, context);
+//		forumList();
+//		if (JForumExecutionContext.getRedirectTo() == null) {
+//			String contentType = JForumExecutionContext.getContentType();
 //			
-//			out = response.getWriter();
-//			
-//			SimpleHash data = JForumExecutionContext.getTemplateContext();
-//			
-//			// Binary content are expected to be fully 
-//			// handled in the action, including outputstream
-//			// manipulation
-//			if (!JForumExecutionContext.isCustomContent()) {
-////				out = new BufferedWriter(new OutputStreamWriter(p , encoding));
-//				template.process(data, out);
-//				
-////				utput.flush();
-////				out.flush();
-//				
+//			if (contentType == null) {
+//				contentType = "text/html; charset=" + encoding;
 //			}
-			
-			
-//			OutputStream output = response.getOutputStream();
-//			while ((len = inputStream.read(b, 0, 1024)) != -1) {
-//			output.write(b,0,len); 
-			//return null就行了。 
-		}
-		
+//			
+//			response.setContentType(contentType);
+//			
+//////			OutputStream p =response.getOutputStream();
+////			
+////			out = response.getWriter();
+////			
+////			SimpleHash data = JForumExecutionContext.getTemplateContext();
+////			
+////			// Binary content are expected to be fully 
+////			// handled in the action, including outputstream
+////			// manipulation
+////			if (!JForumExecutionContext.isCustomContent()) {
+//////				out = new BufferedWriter(new OutputStreamWriter(p , encoding));
+////				template.process(data, out);
+////				
+//////				utput.flush();
+//////				out.flush();
+////				
+////			}
+//			
+//			
+////			OutputStream output = response.getOutputStream();
+////			while ((len = inputStream.read(b, 0, 1024)) != -1) {
+////			output.write(b,0,len); 
+//			//return null就行了。 
+//		}
+//		
+////		return null;
+//		return out;
+//	}
+	
+	
+//	public Template process(RequestContext request, ResponseContext response, SimpleHash context)
+//	{
+//		this.request = request;
+//		this.response = response;
+//		this.context = context;
+//		
+////		String action = this.request.getAction();
+//
+////		if (!this.ignoreAction) {
+////			try {
+////				this.getClass().getMethod(action, NO_ARGS_CLASS).invoke(this, NO_ARGS_OBJECT);
+////			}
+////			catch (NoSuchMethodException e) {		
+////				this.list();		
+////			}
+////			catch (Exception e)
+////            {
+////                throw new ForumException(e);
+////			}
+////		}
+//		
+//		forumList();
+//		
+////		if (JForumExecutionContext.getRedirectTo() != null) {
+////			this.setTemplateName(TemplateKeys.EMPTY);
+////		}
+////		else if (request.getAttribute("template") != null) {
+////			this.setTemplateName((String)request.getAttribute("template"));
+////		}
+//		
+//		if (JForumExecutionContext.isCustomContent()) {
+//			return null;
+//		}
+//		
+////		if (this.templateName == null) {
+////			throw new TemplateNotFoundException("Template for action " + action + " is not defined");
+////		}
+//
+////        try {
+////        	
+////        	logger.info("1:"+new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)));
+////        	logger.info("2:"+this.templateName);
+////        	
+////            return JForumExecutionContext.templateConfig().getTemplate(
+////                new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)).
+////                append('/').append(this.templateName).toString());
+////        }
+////        catch (IOException e) {
+////            throw new ForumException( e);
+////        }
+//		
 //		return null;
-		return out;
-	}
-	
-	
-	public Template process(RequestContext request, ResponseContext response, SimpleHash context)
-	{
-		this.request = request;
-		this.response = response;
-		this.context = context;
-		
-//		String action = this.request.getAction();
-
-//		if (!this.ignoreAction) {
-//			try {
-//				this.getClass().getMethod(action, NO_ARGS_CLASS).invoke(this, NO_ARGS_OBJECT);
-//			}
-//			catch (NoSuchMethodException e) {		
-//				this.list();		
-//			}
-//			catch (Exception e)
-//            {
-//                throw new ForumException(e);
-//			}
-//		}
-		
-		forumList();
-		
-//		if (JForumExecutionContext.getRedirectTo() != null) {
-//			this.setTemplateName(TemplateKeys.EMPTY);
-//		}
-//		else if (request.getAttribute("template") != null) {
-//			this.setTemplateName((String)request.getAttribute("template"));
-//		}
-		
-		if (JForumExecutionContext.isCustomContent()) {
-			return null;
-		}
-		
-//		if (this.templateName == null) {
-//			throw new TemplateNotFoundException("Template for action " + action + " is not defined");
-//		}
-
-//        try {
-//        	
-//        	logger.info("1:"+new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)));
-//        	logger.info("2:"+this.templateName);
-//        	
-//            return JForumExecutionContext.templateConfig().getTemplate(
-//                new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)).
-//                append('/').append(this.templateName).toString());
-//        }
-//        catch (IOException e) {
-//            throw new ForumException( e);
-//        }
-		
-		return null;
-    }
+//    }
 	
 	
 	public void forumList()
@@ -379,6 +441,80 @@ public class JForumAction extends ActionSupport {
 		this.context.put("mostUsersEverOnline", mostUsersEverOnline);
 	}
 	
+	
+	
+	public void forumShow()
+	
+	
+	{
+		logger.info("fid="+fid);
+//		logger.info("request fid:"+this.request.getIntParameter("forum_id"));
+//		int forumId = this.request.getIntParameter("forum_id");
+		int forumId = fid;
+		
+		ForumDAO fm = DataAccessDriver.getInstance().newForumDAO();
+
+		// The user can access this forum?
+		Forum forum = ForumRepository.getForum(forumId);
+
+		if (forum == null || !ForumRepository.isCategoryAccessible(forum.getCategoryId())) {
+			new ModerationHelper().denied(I18n.getMessage("ForumListing.denied"));
+			return;
+		}
+
+		int start = ViewCommon.getStartPage();
+
+		List tmpTopics = TopicsCommon.topicsByForum(forumId, start);
+
+//		this.setTemplateName(TemplateKeys.FORUMS_SHOW);
+
+		// Moderation
+		UserSession userSession = SessionFacade.getUserSession();
+		boolean isLogged = SessionFacade.isLogged();
+		boolean isModerator = userSession.isModerator(forumId);
+
+		boolean canApproveMessages = (isLogged && isModerator 
+			&& SecurityRepository.canAccess(SecurityConstants.PERM_MODERATION_APPROVE_MESSAGES));
+
+		Map topicsToApprove = new HashMap();
+
+		if (canApproveMessages) {
+			ModerationDAO mdao = DataAccessDriver.getInstance().newModerationDAO();
+			topicsToApprove = mdao.topicsByForum(forumId);
+			this.context.put("postFormatter", new PostCommon());
+		}
+
+		this.context.put("topicsToApprove", topicsToApprove);
+
+		this.context.put("attachmentsEnabled", SecurityRepository.canAccess(SecurityConstants.PERM_ATTACHMENTS_ENABLED,
+		        Integer.toString(forumId))
+		        || SecurityRepository.canAccess(SecurityConstants.PERM_ATTACHMENTS_DOWNLOAD));
+
+		this.context.put("topics", TopicsCommon.prepareTopics(tmpTopics));
+		this.context.put("allCategories", ForumCommon.getAllCategoriesAndForums(false));
+		this.context.put("forum", forum);
+		this.context.put("rssEnabled", SystemGlobals.getBoolValue(ConfigKeys.RSS_ENABLED));
+		this.context.put("pageTitle", forum.getName());
+		this.context.put("canApproveMessages", canApproveMessages);
+		this.context.put("replyOnly", !SecurityRepository.canAccess(SecurityConstants.PERM_REPLY_ONLY, Integer
+		        .toString(forum.getId())));
+
+		this.context.put("readonly", !SecurityRepository.canAccess(SecurityConstants.PERM_READ_ONLY_FORUMS, Integer
+		        .toString(forumId)));
+
+		this.context.put("watching", fm.isUserSubscribed(forumId, userSession.getUserId()));
+
+		// Pagination
+		int topicsPerPage = SystemGlobals.getIntValue(ConfigKeys.TOPICS_PER_PAGE);
+		int postsPerPage = SystemGlobals.getIntValue(ConfigKeys.POSTS_PER_PAGE);
+		int totalTopics = forum.getTotalTopics();
+
+		ViewCommon.contextToPagination(start, totalTopics, topicsPerPage);
+		this.context.put("postsPerPage", new Integer(postsPerPage));
+
+		TopicsCommon.topicListingBase();
+		this.context.put("moderator", isLogged && isModerator);
+	}
 	
 	
 	

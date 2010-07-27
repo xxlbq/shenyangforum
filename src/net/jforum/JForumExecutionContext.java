@@ -175,6 +175,14 @@ public class JForumExecutionContext
 
     public static ForumContext getForumContext()
     {
+    	if(userData == null){
+    		return null;
+    	}
+    	if((JForumExecutionContext)userData.get() == null){
+    		return null;
+    	}
+    	
+    	
         return ((JForumExecutionContext)userData.get()).forumContext;
     }
 
@@ -327,6 +335,6 @@ public class JForumExecutionContext
 			}
 		}
 		
-		userData.set(null);
+//		userData.set(null);
 	}
 }
