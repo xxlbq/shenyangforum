@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.jforum.Command;
 import net.jforum.ControllerUtils;
+import net.jforum.DBConnection;
 import net.jforum.ForumStartup;
 import net.jforum.JForumExecutionContext;
 import net.jforum.SessionFacade;
@@ -126,6 +128,7 @@ public class JForumAction extends ActionSupport {
     	HttpServletRequest request = ServletActionContext.getRequest(); 
     	HttpServletResponse response = ServletActionContext.getResponse(); 
     	String s = null;
+    	Writer out = null;
     	try {
 //    		forumList();
 			s = service(request, response);
@@ -134,13 +137,26 @@ public class JForumAction extends ActionSupport {
 			}else if(s.equalsIgnoreCase(ERROR)){
 				
 			}
+			
+			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
 //    	name = "Hello, " + name + "!"; 
         return s;
     }
@@ -165,6 +181,16 @@ public class JForumAction extends ActionSupport {
 		} catch (ServletException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
 		}
 //    	name = "Hello, " + name + "!"; 
         return s;
@@ -200,7 +226,13 @@ public class JForumAction extends ActionSupport {
                 response
             );
             ex.setForumContext(forumContext);
-
+            
+			// Check if we're in fact up and running
+			Connection conn = DBConnection.getImplementation().getConnection();
+//			DBConnection.getImplementation().releaseConnection(conn);
+			conn.setAutoCommit(!SystemGlobals.getBoolValue(ConfigKeys.DATABASE_USE_TRANSACTIONS));
+			ex.setConnection(conn);
+			
             JForumExecutionContext.set(ex);
 
 			// Setup stuff
@@ -263,11 +295,7 @@ public class JForumAction extends ActionSupport {
 			this.handleException(out, response, encoding, e, request);
 			return ERROR;
 		}
-		finally {
-			this.handleFinally(out, forumContext, response);
-//			return SUCCESS;
-			
-		}		
+	
 	}
 	
 //	private Writer processCommand(Writer out, RequestContext request, ResponseContext response, 
@@ -447,7 +475,7 @@ public class JForumAction extends ActionSupport {
 	
 	
 	{
-		logger.info("fid="+fid);
+		logger.info("forumShow()   fid="+fid);
 //		logger.info("request fid:"+this.request.getIntParameter("forum_id"));
 //		int forumId = this.request.getIntParameter("forum_id");
 		int forumId = fid;
@@ -455,8 +483,10 @@ public class JForumAction extends ActionSupport {
 		ForumDAO fm = DataAccessDriver.getInstance().newForumDAO();
 
 		// The user can access this forum?
+		logger.info("fid="+fid + ", ForumRepository.getForum(forumId);   begin ");
 		Forum forum = ForumRepository.getForum(forumId);
-
+		logger.info("fid="+fid+",  ForumRepository.getForum(forumId);    end ");
+		
 		if (forum == null || !ForumRepository.isCategoryAccessible(forum.getCategoryId())) {
 			new ModerationHelper().denied(I18n.getMessage("ForumListing.denied"));
 			return;
@@ -547,7 +577,7 @@ public class JForumAction extends ActionSupport {
 	}
     
 
-	private void handleFinally(Writer out, JForumContext forumContext, ResponseContext response) throws IOException
+	private void handleFinally() throws IOException
 	{
 		try {
 //			if (out != null) { out.close(); }
@@ -556,17 +586,17 @@ public class JForumAction extends ActionSupport {
 		    // catch close error 
 		}
 		
-		String redirectTo = JForumExecutionContext.getRedirectTo();
-//		JForumExecutionContext.finish();
+//		String redirectTo = JForumExecutionContext.getRedirectTo();
+		JForumExecutionContext.finish();
 		
-		if (redirectTo != null) {
-			if (forumContext != null && forumContext.isEncodingDisabled()) {
-				response.sendRedirect(redirectTo);
-			} 
-			else {
-				response.sendRedirect(response.encodeRedirectURL(redirectTo));
-			}
-		}
+//		if (redirectTo != null) {
+//			if (forumContext != null && forumContext.isEncodingDisabled()) {
+//				response.sendRedirect(redirectTo);
+//			} 
+//			else {
+//				response.sendRedirect(response.encodeRedirectURL(redirectTo));
+//			}
+//		}
 	}
 
 	private void handleException(Writer out, ResponseContext response, String encoding, 
