@@ -335,6 +335,6 @@ public class JForumExecutionContext
 			}
 		}
 		
-//		userData.set(null);
+		userData.set(null);
 	}
 }
