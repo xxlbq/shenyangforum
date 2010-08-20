@@ -111,7 +111,7 @@
 						<tr class="${Request.forumdata.rowColor}">
 							<td width="90%">
 								<#if (topic.topicReplies > 0)>
-									<a href="${Request.forumdata.JForumContext.encodeURL("/posts/list/${topic.topicId}")}" class="gen">${topic.topicTitle?html}</a>
+									<a href="${Request.forumdata.JForumContext.encodeURL("/posts/list/postList.action?topicId=${topic.topicId}")}" class="gen">${topic.topicTitle?html}</a>
 								<#else>
 									<span class="gen">${topic.topicTitle?html}</span>
 								</#if>
@@ -308,15 +308,7 @@
 						<#include "folder_descriptions.htm"/>
 					</td>
 
-					<#assign moderators = Request.forumdata.forum.getModeratorList()/>
-					<#if (moderators.size() > 0)>
-						<td align="right" class="gensmall">
-							${Request.forumdata.I18n.getMessage("ForumIndex.forumAdmins")}:
-							<b><#list moderators as m>
-							<a href="${Request.forumdata.JForumContext.encodeURL("/user/listGroup/${m.id}")}">${m.name?html}</a>
-							</#list></b>
-						</td>
-					</#if>
+
 				</tr>
 			</table>
 		</td>
