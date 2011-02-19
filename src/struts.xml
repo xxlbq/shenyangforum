@@ -13,11 +13,14 @@
 		<action name="show" class="net.jforum.s2action.JForumAction" method="show">
 			<result name="success" type="freemarker" >/templates/default/forum_show.ftl</result>
 		</action>
-		<action name="postList" class="net.jforum.s2action.JPostAction" method="list">
-			<result name="success" type="freemarker" >/templates/default/forum_show.ftl</result>
-		</action>
+
 	</package>
 	
+	<package name="post" extends="struts-default">
+		<action name="postList" class="net.jforum.s2action.JPostAction" method="list">
+			<result name="success" type="freemarker" >/templates/default/post_show.ftl</result>
+		</action>
+	</package>
 <!--	-->
 <!--	<package name="tutorial" extends="struts-default">-->
 <!---->

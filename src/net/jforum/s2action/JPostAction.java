@@ -54,10 +54,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import net.jforum.Command;
 import net.jforum.JForumExecutionContext;
 import net.jforum.SessionFacade;
 import net.jforum.context.RequestContext;
+import net.jforum.context.ResponseContext;
 import net.jforum.dao.AttachmentDAO;
 import net.jforum.dao.DataAccessDriver;
 import net.jforum.dao.ForumDAO;
@@ -99,6 +104,8 @@ import net.jforum.view.forum.common.TopicsCommon;
 import net.jforum.view.forum.common.ViewCommon;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 
 import freemarker.template.SimpleHash;
 
@@ -106,18 +113,58 @@ import freemarker.template.SimpleHash;
  * @author Rafael Steil
  * @version $Id: PostAction.java,v 1.198 2007/09/27 04:47:19 rafaelsteil Exp $
  */
-public class JPostAction extends Command 
-{
+public class JPostAction extends JDefaultAction 
+{private static Logger logger = Logger.getLogger(JPostAction.class);
 	public JPostAction() {
 	}
 
-	public JPostAction(RequestContext request, SimpleHash templateContext) {
-		super.context = templateContext;
-		super.request = request;
-	}
+//	public JPostAction(RequestContext request, SimpleHash templateContext) {
+//		super.context = templateContext;
+//		super.request = request;
+//	}
 
-	public void list()
+	public String list()
 	{
+    	logger.info("===========>  JPostAction list method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse();
+    	String s = null;
+//    	Writer out = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+				servicelist(request, response);
+			}else if(s.equalsIgnoreCase(ERROR)){
+				logger.info("list service return error !");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
+//    	name = "Hello, " + name + "!"; 
+        return s;
+
+	}
+	
+	private String servicelist(HttpServletRequest req, HttpServletResponse res) {
+		
 		PostDAO postDao = DataAccessDriver.getInstance().newPostDAO();
 		PollDAO pollDao = DataAccessDriver.getInstance().newPollDAO();
 
@@ -126,6 +173,10 @@ public class JPostAction extends Command
 		UserSession us = SessionFacade.getUserSession();
 		int anonymousUser = SystemGlobals.getIntValue(ConfigKeys.ANONYMOUS_USER_ID);
 		boolean logged = SessionFacade.isLogged();
+		
+		
+		super.context = JForumExecutionContext.getTemplateContext();
+
 		
 		int topicId = this.request.getIntParameter("topic_id");
 		
@@ -138,7 +189,7 @@ public class JPostAction extends Command
 		// The topic exists?
 		if (topic.getId() == 0) {
 			this.topicNotFound();
-			return;
+			return ERROR;
 		}
 
 		// Shall we proceed?
@@ -147,11 +198,11 @@ public class JPostAction extends Command
 		if (!logged) {
 			if (forum == null || !ForumRepository.isCategoryAccessible(forum.getCategoryId())) {
 				this.setTemplateName(ViewCommon.contextToLogin());
-				return;
+				return ERROR;
 			}
 		}
 		else if (!TopicsCommon.isTopicAccessible(topic.getForumId())) {
-			return;
+			return ERROR;
 		}
 
 		int count = SystemGlobals.getIntValue(ConfigKeys.POSTS_PER_PAGE);
@@ -170,7 +221,7 @@ public class JPostAction extends Command
 		// Is moderation pending for the topic?
 		if (topic.isModerated() && helperList.size() == 0) {
 			this.notModeratedYet();
-			return;
+			return ERROR;
 		}
 
 		// Set the topic status as read
@@ -252,8 +303,9 @@ public class JPostAction extends Command
 		
 		TopicsCommon.topicListingBase();
 		TopicRepository.updateTopic(topic);
+		return null;
 	}
-	
+
 	/**
 	 * Given a postId, sends the user to the right page
 	 */

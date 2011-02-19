@@ -20,7 +20,7 @@
 				<tr>
 					<td valign="bottom" align="left" colspan="2">
 						<a class="maintitle" href="${Request.forumdata.JForumContext.encodeURL("/forums/list")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")}</a> &raquo;
-						<a class="maintitle" href="${Request.forumdata.JForumContext.encodeURL("/forums/show/${Request.forumdata.forum.id}")}">${Request.forumdata.forum.name?html}</a>
+						<a class="maintitle" href="${Request.forumdata.JForumContext.encodeURL("/forums/show.action?fid=${Request.forumdata.forum.id}")}">${Request.forumdata.forum.name?html}</a>
 
 						<#if Request.forumdata.rssEnabled>
 							<a href="${Request.forumdata.JForumContext.encodeURL("/rss/forumTopics/${Request.forumdata.forum.id}")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/xml_button.gif" border="0" alt="[XML]" /></a>
@@ -201,7 +201,7 @@
 						<td ${class1} width="100%">
 							<#if topic.hasAttach() && attachmentsEnabled><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_clip.gif" align="middle" alt="[Clip]" /></#if>
 							<span class="topictitle">
-							<a href="${Request.forumdata.JForumContext.encodeURL("/posts/list/${topic.id}")}">
+							<a href="${Request.forumdata.JForumContext.encodeURL("/post/postList.action?topic_id=${topic.id}")}">
 							<#if topic.vote>${Request.forumdata.I18n.getMessage("ForumListing.pollLabel")}</#if>
 							<#if (topic.title?length == 0)>
 								No Subject
