@@ -80,7 +80,7 @@
 
 					<td valign="middle" align="left" colspan="${Request.forumdata.colspan?default("0")}">
 						<span class="nav">
-						<a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/list")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")} </a> 
+						<a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/list.action")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")} </a> 
             			&raquo; <a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/show.action?fid=${Request.forumdata.forum.id}")}">${Request.forumdata.forum.name} </a></span>
 					</td>
 					<td valign="middle" align="right"><#assign paginationData><@pagination.doPagination "list", Request.forumdata.topic.id/></#assign>${paginationData}</td>
@@ -387,7 +387,7 @@ $(document).ready(function() {
 	<#if Request.forumdata.moderatorCanEdit || canEditSomeMessage>
 		$(".edit_area").editable("${Request.forumdata.contextPath}/jforum${Request.forumdata.extension}?module=ajax&action=savePost", {
 			submit: '${Request.forumdata.I18n.getMessage("Update")}',
-			cancel: '${Request.forumdata.I18n.getMessage("cancel")}',
+			cancel: '${Request.forumdata.I18n.getMessage("Cancel")}',
 			type: 'textarea',
 			tooltip: '${Request.forumdata.I18n.getMessage("PostShow.doubleClickEdit")}',
 			rows: 15,
@@ -398,7 +398,7 @@ $(document).ready(function() {
 			cssclass: 'inlineedit',
 			loadtext: '${Request.forumdata.I18n.getMessage("PostShow.loading")}...',
 			beforesubmit: function(submitdata) { 
-				<#if moderationLoggingEnabled>
+				<#if Request.forumdata.moderationLoggingEnabled>
 					var message = prompt("${Request.forumdata.I18n.getMessage("ModerationLog.changeReason")}");
 
 					if (message == null || message == "") {

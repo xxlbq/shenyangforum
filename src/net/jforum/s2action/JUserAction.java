@@ -251,7 +251,7 @@ public class JUserAction extends JDefaultAction
 		return "1".equals(SessionFacade.getAttribute(ConfigKeys.AGREEMENT_ACCEPTED));
 	}
 
-	public void insertSave()
+	public String doInsertSave()
 	{
 		UserSession userSession = SessionFacade.getUserSession();
 		int userId = userSession.getUserId();
@@ -260,7 +260,7 @@ public class JUserAction extends JDefaultAction
 				&& !SecurityRepository.get(userId).canAccess(SecurityConstants.PERM_ADMINISTRATION))
 				|| ConfigKeys.TYPE_SSO.equals(SystemGlobals.getValue(ConfigKeys.AUTHENTICATION_TYPE))) {
 			this.registrationDisabled();
-			return;
+			return ERROR;
 		}
 
 		User u = new User();
@@ -309,7 +309,7 @@ public class JUserAction extends JDefaultAction
 
 		if (error) {
 			this.insert(true);
-			return;
+			return ERROR;
 		}
 
 		u.setUsername(username);
@@ -342,6 +342,8 @@ public class JUserAction extends JDefaultAction
 		if (!requiresMailActivation) {
 			dao.writeUserActive(newUserId);
 		}
+		
+		return SUCCESS;
 	}
 
 	public void activateAccount()
@@ -671,8 +673,50 @@ public class JUserAction extends JDefaultAction
 		this.context.put("message", I18n.getMessage("User.notFound"));
 		this.setTemplateName(TemplateKeys.USER_NOT_FOUND);
 	}
+	public String logout()
+	{
 
-	public void logout()
+    	
+    	
+       	logger.info("===========>  JPostAction list method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse();
+    	String s = null;
+//    	Writer out = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+//				servicelist(request, response);
+				s =	dologout();
+			}else if(s.equalsIgnoreCase(ERROR)){
+				logger.info("list service return error !");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
+//    	name = "Hello, " + name + "!"; 
+        return s;
+
+	}
+	public String dologout()
 	{
 		JForumExecutionContext.setRedirect(this.request.getContextPath()
 			+ "/forums/list"
@@ -689,8 +733,105 @@ public class JUserAction extends JDefaultAction
 		userSession.makeAnonymous();
 
 		SessionFacade.add(userSession);
+		return SUCCESS ;
 	}
 
+	
+	public String shownew()
+	{
+
+    	
+    	
+       	logger.info("===========>  JPostAction list method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse();
+    	String s = null;
+//    	Writer out = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+//				servicelist(request, response);
+				s =	commonService();
+//				insert();
+			}else if(s.equalsIgnoreCase(ERROR)){
+				logger.info("list service return error !");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
+//    	name = "Hello, " + name + "!"; 
+        return s;
+
+	}
+	
+	
+	public String insertSave()
+	{
+
+    	
+    	
+       	logger.info("===========>  JPostAction list method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse();
+    	String s = null;
+//    	Writer out = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+//				servicelist(request, response);
+				s =	commonService();
+				if(s.equalsIgnoreCase(SUCCESS)){
+					s= doInsertSave();
+				}else{
+					return ERROR;
+				}
+			}else if(s.equalsIgnoreCase(ERROR)){
+				logger.info("list service return error !");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
+//    	name = "Hello, " + name + "!"; 
+        return s;
+
+	}
+	
 	public String login()
 	{
 
@@ -706,7 +847,7 @@ public class JUserAction extends JDefaultAction
 			s = service(request, response);
 			if(s.equalsIgnoreCase(SUCCESS)){
 //				servicelist(request, response);
-				s =	showLoginService();
+				s =	commonService();
 			}else if(s.equalsIgnoreCase(ERROR)){
 				logger.info("list service return error !");
 			}
@@ -735,7 +876,7 @@ public class JUserAction extends JDefaultAction
 
 	}
 
-	private String showLoginService() {
+	private String commonService() {
 
 		if (ConfigKeys.TYPE_SSO.equals(SystemGlobals.getValue(ConfigKeys.AUTHENTICATION_TYPE))) {
 			this.registrationDisabled();
