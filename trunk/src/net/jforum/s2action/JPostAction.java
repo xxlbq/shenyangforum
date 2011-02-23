@@ -163,6 +163,47 @@ public class JPostAction extends JDefaultAction
 
 	}
 	
+	
+	public String insert()
+	{
+    	logger.info("===========>  JPostAction list method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse();
+    	String s = null;
+//    	Writer out = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+				s = doInsert();
+			}else if(s.equalsIgnoreCase(ERROR)){
+				logger.info("list service return error !");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
+//    	name = "Hello, " + name + "!"; 
+        return s;
+
+	}
+	
 	private String servicelist(HttpServletRequest req, HttpServletResponse res) {
 		
 		PostDAO postDao = DataAccessDriver.getInstance().newPostDAO();
@@ -508,10 +549,10 @@ public class JPostAction extends JDefaultAction
 	
 	public void reply()
 	{
-		this.insert();
+//		this.doInsert();
 	}
 
-	public void insert()
+	public String doInsert()
 	{
 		int forumId;
 
@@ -532,12 +573,12 @@ public class JPostAction extends JDefaultAction
 			forumId = t.getForumId();
 			
 			if (!TopicsCommon.isTopicAccessible(t.getForumId())) {
-				return;
+				return ERROR;
 			}
 
 			if (t.getStatus() == Topic.STATUS_LOCKED) {
 				this.topicLocked();
-				return;
+				return ERROR;
 			}
 
 			this.context.put("topic", t);
@@ -549,7 +590,7 @@ public class JPostAction extends JDefaultAction
 
 			if (this.isReplyOnly(forumId)) {
 				this.replyOnly();
-				return;
+				return ERROR;
 			}
 			this.context.put("setType", true);
 			this.context.put("pageTitle", I18n.getMessage("PostForm.title"));
@@ -562,12 +603,12 @@ public class JPostAction extends JDefaultAction
 		}
 		
 		if (!TopicsCommon.isTopicAccessible(forumId)) {
-			return;
+			return ERROR;
 		}
 		
 		if (!this.anonymousPost(forumId)
 				|| this.isForumReadonly(forumId, this.request.getParameter("topic_id") != null)) {
-			return;
+			return ERROR;
 		}
 		
 		int userId = SessionFacade.getUserSession().getUserId();
@@ -616,8 +657,12 @@ public class JPostAction extends JDefaultAction
 		}
 
 		this.context.put("user", user);
+		return SUCCESS;
 	}
 
+	
+	
+	
 	public void edit()  {
 		this.edit(false, null);
 	}
