@@ -20,6 +20,11 @@
 		<action name="postList" class="net.jforum.s2action.JPostAction" method="list">
 			<result name="success" type="freemarker" >/templates/default/post_show.ftl</result>
 		</action>
+		
+		<action name="insert" class="net.jforum.s2action.JPostAction" method="insert">
+			<result name="success" type="freemarker" >/templates/default/post_form.ftl</result>
+		</action>
+		
 	</package>
 	
 	<package name="user" extends="struts-default">
