@@ -30,6 +30,9 @@ Modifications by JForum Team
 
 <table width="100%" border="0">
 	<tr>
+	header.ftl
+	</tr>
+	<tr>
 		<td>
 			<table cellspacing="0" cellpadding="0" width="100%" border="0">
 				<tr>
@@ -61,13 +64,13 @@ Modifications by JForum Team
 									</#if>
 
 									<#if logged>
-										<a id="myprofile" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/edit/${session.userId}")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_profile.gif" border="0" alt="[Profile]" /> ${Request.forumdata.I18n.getMessage("ForumBase.profile")}</a>&nbsp; 
-										<#if bookmarksEnabled>
-											<a class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/bookmarks/list/${session.userId}")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_minipost.gif" alt="[Post]" />${Request.forumdata.I18n.getMessage("Bookmarks.myBag")}</a>&nbsp;
+										<a id="myprofile" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/edit/${Request.forumdata.session.userId}")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_profile.gif" border="0" alt="[Profile]" /> ${Request.forumdata.I18n.getMessage("ForumBase.profile")}</a>&nbsp; 
+										<#if Request.forumdata.bookmarksEnabled>
+											<a class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/bookmarks/list/${Request.forumdata.session.userId}")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_minipost.gif" alt="[Post]" />${Request.forumdata.I18n.getMessage("Bookmarks.myBag")}</a>&nbsp;
 										</#if>
 										<a id="privatemessages" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/pm/inbox")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_message.gif" border="0" alt="[Message]" />
-											<#if (session.privateMessages > 0)>
-												${Request.forumdata.I18n.getMessage("ForumBase.newPm")}: (${session.privateMessages})
+											<#if (Request.forumdata.session.privateMessages > 0)>
+												${Request.forumdata.I18n.getMessage("ForumBase.newPm")}: (${Request.forumdata.session.privateMessages})
 											<#else>
 												${Request.forumdata.I18n.getMessage("ForumBase.privateMessages")}
 											</#if>
@@ -75,13 +78,14 @@ Modifications by JForum Team
 										</span>
 
 										<#if ! Request.forumdata.sso>
-											<a id="logout" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/logout")}"><img src="${contextPath}/templates/${templateName}/images/icon_mini_login.gif" border="0" alt="[Login]" /> ${Request.forumdata.I18n.getMessage("ForumBase.logout")} [${session.username}] </a></span>
+											<a id="logout" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/logout")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_login.gif" border="0" alt="[Login]" /> ${Request.forumdata.I18n.getMessage("ForumBase.logout")} [${Request.forumdata.session.username}] </a></span>
 										</#if>
 									</#if>
 	
 									<#if !Request.forumdata.logged && !Request.forumdata.sso>
 										<a id="register" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/insert")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_register.gif" border="0" alt="[Register]" /> ${Request.forumdata.I18n.getMessage("ForumBase.register")}</a>&nbsp;/&nbsp;</span>
-										<a id="login" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/login")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_login.gif" border="0" alt="[Login]" /> ${Request.forumdata.I18n.getMessage("ForumBase.login")}</a>&nbsp; </span>
+										<a id="login" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/login.action")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_login.gif" border="0" alt="[Login]" /> ${Request.forumdata.I18n.getMessage("ForumBase.login")}</a>&nbsp; </span>
+										
 									</#if>
 
 									

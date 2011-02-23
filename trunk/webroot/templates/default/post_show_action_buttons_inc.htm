@@ -16,11 +16,11 @@
 		</#if>
 
 		<#if (canEditCurrentMessage)>
-			<a href="${Request.forumdata.JForumContext.encodeURL("/jforum${extension}?module=${Request.forumdata.moduleName}&amp;action=edit&amp;post_id=${Request.forumdata.post.id}&amp;start=${start}","")}" rel="nofollow" class="icon_edit"><img src="${Request.forumdata.contextPath}/images/transp.gif" alt="" /></a>  
+			<a href="${Request.forumdata.JForumContext.encodeURL("/jforum${Request.forumdata.extension}?action=edit&amp;post_id=${post.id}&amp;start=${Request.forumdata.start}","")}" rel="nofollow" class="icon_edit"><img src="${Request.forumdata.contextPath}/images/transp.gif" alt="" /></a>  
 		</#if>
 
 		<#if Request.forumdata.canRemove>
-			<a href="${Request.forumdata.JForumContext.encodeURL("/jforum${extension}?module=${Request.forumdata.moduleName}&amp;action=delete&amp;post_id=${Request.forumdata.post.id}&amp;start=${start}","")}" id="delete${post.id}" onclick="return confirmDelete(${post.id});"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_delete.gif" alt="[Delete]" /></a>  
+			<a href="${Request.forumdata.JForumContext.encodeURL("/jforum${Request.forumdata.extension}?action=delete&amp;post_id=${post.id}&amp;start=${Request.forumdata.start}","")}" id="delete${post.id}" onclick="return confirmDelete(${post.id});"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_delete.gif" alt="[Delete]" /></a>  
 		</#if>
 
 		<a class="nav" href="#top"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_up.gif" alt="[Up]" /></a>

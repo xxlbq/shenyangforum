@@ -17,7 +17,7 @@
 		document.write('<select name="karma" onchange="karmaVote(this,' + postId + ')">');
 		document.write('<option value="">${Request.forumdata.I18n.getMessage("Karma.rateMessage")}</option>');
 
-		for (var i = ${karmaMin}; i <= ${karmaMax}; i++) {
+		for (var i = ${Request.forumdata.karmaMin}; i <= ${Request.forumdata.karmaMax}; i++) {
 			document.write('<option value="' + i + '">' + i + '</option>');
 		}
 

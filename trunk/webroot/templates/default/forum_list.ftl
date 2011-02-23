@@ -2,6 +2,8 @@
 <link rel="alternate" type="application/rss+xml" title="RSS" href="${Request.forumdata.contextPath}/rss/recentTopics${Request.forumdata.extension}" />
 
 <table width="100%" align="center">
+	<tr>forum_list.ftl
+	</tr>
 	<tr>
 		<td width="100%" height="318" valign="top">
 			<table cellspacing="0" cellpadding="2" width="100%" align="center" border="0">
@@ -9,11 +11,11 @@
 					<td valign="bottom" align="left">
 						<#if Request.forumdata.logged><span class="gensmall">${Request.forumdata.I18n.getMessage("ForumListing.lastVisit")}: ${Request.forumdata.lastVisit}</span><br /></#if>
 						<span class="gensmall">${Request.forumdata.I18n.getMessage("ForumListing.date")}: ${Request.forumdata.now}</span><br />
-						<span class="forumlink"><a class="forumlink" href="${Request.forumdata.JForumContext.encodeURL("/forums/list")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")}</a></span>
+						<span class="forumlink"><a class="forumlink" href="${Request.forumdata.JForumContext.encodeURL("/forums/list.action")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")}</a></span>
 					</td>
 					<td class="gensmall" valign="bottom" align="right">&nbsp;
 					<#if logged>
-						<a class="gensmall" href="${JForumContext.encodeURL("/forums/newMessages")}">${I18n.getMessage("ForumListing.readLastVisitMessages")}</a>
+						<a class="gensmall" href="${Request.forumdata.JForumContext.encodeURL("/forums/newMessages")}">${Request.forumdata.I18n.getMessage("ForumListing.readLastVisitMessages")}</a>
 					</#if>
 					</td>
 				</tr>
@@ -143,32 +145,7 @@
 			<br />
         
 			<#if !Request.forumdata.logged && !Request.forumdata.sso>
-			<form name="formlogin" accept-charset="${Request.forumdata.encoding}" action="${Request.forumdata.JForumContext.encodeURL("/jforum")}" method="post">
-				<input type="hidden" name="module" value="user" />
-				<input type="hidden" name="action" value="validateLogin" />
-				
-				<table class="forumline" cellspacing="1" cellpadding="3" width="100%" border="0">
-					<tr>
-						<td class="cathead" height="28"><a name="login2" id="login2"></a><span class="cattitle">${Request.forumdata.I18n.getMessage("Login.enter")}</span></td>
-					</tr>
-
-					<tr>
-						<td class="row1" valign="middle" align="center" height="28">
-							<span class="gensmall">
-								${Request.forumdata.I18n.getMessage("Login.user")}: <input class="post" size="10" name="username" type="text"/> 
-								&nbsp;&nbsp;&nbsp;
-								${Request.forumdata.I18n.getMessage("Login.password")}: <input class="post" type="password" size="10" name="password" /> 
-								<#if Request.forumdata.autoLoginEnabled>
-									&nbsp;&nbsp; &nbsp;&nbsp;
-									<label for="autologin">${Request.forumdata.I18n.getMessage("Login.autoLogon")}</label> <input class="text" type="checkbox" name="autologin" id="autologin"/>
-								</#if>
-								&nbsp;&nbsp;&nbsp; 
-								<input class="mainoption" type="submit" value="${Request.forumdata.I18n.getMessage("Login.enter")}" name="login" /> 
-							</span>
-						</td>
-					</tr>
-				</table>
-			</form>
+			<#include "showlogin.ftl"/>
 			</#if>
 
 			<table cellspacing="3" cellpadding="0" align="center" border="0">

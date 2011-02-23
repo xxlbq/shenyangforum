@@ -21,6 +21,22 @@
 			<result name="success" type="freemarker" >/templates/default/post_show.ftl</result>
 		</action>
 	</package>
+	
+	<package name="user" extends="struts-default">
+	
+		<action name="login" class="net.jforum.s2action.JUserAction" method="login">
+			<result name="success" type="freemarker" >/templates/default/forum_login.flt</result>
+		</action>
+		
+		<action name="loginValidate" class="net.jforum.s2action.JUserAction" method="loginValidate">
+			<result name="success" type="freemarker" >
+				/index.htm
+			</result>
+			<result name="error"   type="freemarker" >/templates/default/forum_login.flt</result>
+		</action>
+		
+	</package>
+	
 <!--	-->
 <!--	<package name="tutorial" extends="struts-default">-->
 <!---->

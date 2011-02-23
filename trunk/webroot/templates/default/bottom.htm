@@ -2,7 +2,7 @@
 </tr>
 	<tr>
 		<td align="center">
-			<#if Request.forumdata.session?exists && Request.forumdata.session.isAdmin()><span class="gen"><a id="adminpanel" href='${JForumContext.encodeURL("/admBase/login")}'>${Request.forumdata.I18n.getMessage("ForumBase.admin")}</a></span></#if>
+			<#if Request.forumdata.session?exists && Request.forumdata.session.isAdmin()><span class="gen"><a id="adminpanel" href='${Request.forumdata.JForumContext.encodeURL("/admBase/login")}'>${Request.forumdata.I18n.getMessage("ForumBase.admin")}</a></span></#if>
 		</td>
 	</tr>
 
