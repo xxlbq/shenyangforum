@@ -95,7 +95,7 @@
 		if (confirm("${Request.forumdata.I18n.getMessage("Moderation.ConfirmDelete")}")
 			&& askModerationReason()) {
 			todo("topicRemove");
-			document.formModeration.returnUrl.value = "${Request.forumdata.JForumContext.encodeURL("/forums/show/${topic.forumId}")}";
+			document.formModeration.returnUrl.value = "${Request.forumdata.JForumContext.encodeURL("/forums/show/${Request.forumdata.topic.forumId}")}";
 			document.formModeration.log_type.value = "1";
 			document.formModeration.submit();
 		}

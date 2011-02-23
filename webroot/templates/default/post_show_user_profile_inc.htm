@@ -25,7 +25,7 @@
 		</#if>
 		
 		<#if (user.msnm?exists && user.msnm?length > 0)>
-			<a href="${JForumContext.encodeURL("/user/profile/${user.id}")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_msnm.gif" alt="[MSN]"  /></a>
+			<a href="${Request.forumdata.JForumContext.encodeURL("/user/profile/${user.id}")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_msnm.gif" alt="[MSN]"  /></a>
 		</#if>
 		
 		<#if (user.icq?exists && user.icq?length > 0)>
@@ -33,9 +33,9 @@
 		</#if>
 	</td>
 
-	<#if Request.forumdata.karmaEnabled && post.userId != session.userId && logged>
+	<#if Request.forumdata.karmaEnabled && post.userId != Request.forumdata.session.userId && logged>
 		<td align="right">
-		<#if !karmaVotes.containsKey(post.id)>
+		<#if !Request.forumdata.karmaVotes.containsKey(post.id)>
 			<script type="text/javascript">karmaPointsCombo(${post.id})</script>
 		<#else>
 			<span class="gensmall">${Request.forumdata.I18n.getMessage("Karma.yourRate")}: ${Request.forumdata.karmaVotes.get(post.id)}</span>

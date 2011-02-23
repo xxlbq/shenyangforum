@@ -6,7 +6,7 @@
 <script type="text/javascript" src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/js/pagination.js?${startupTime}"></script>
 
 <#if Request.forumdata.logged>
-	<script type="text/javascript" src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/js/watch.js?${Request.forumdata.startupTime}"></script>
+	<script type="text/javascript" src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/js/watch.js?${startupTime}"></script>
 </#if>
 
 <#if Request.forumdata.moderator>
@@ -19,7 +19,7 @@
 			<table cellspacing="2" cellpadding="2" width="100%" align="center">
 				<tr>
 					<td valign="bottom" align="left" colspan="2">
-						<a class="maintitle" href="${Request.forumdata.JForumContext.encodeURL("/forums/list")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")}</a> &raquo;
+						<a class="maintitle" href="${Request.forumdata.JForumContext.encodeURL("/forums/list.action")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")}</a> &raquo;
 						<a class="maintitle" href="${Request.forumdata.JForumContext.encodeURL("/forums/show.action?fid=${Request.forumdata.forum.id}")}">${Request.forumdata.forum.name?html}</a>
 
 						<#if Request.forumdata.rssEnabled>

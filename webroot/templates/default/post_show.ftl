@@ -23,10 +23,10 @@
 	function confirmDelete(postId)
 	{
 		if (confirm("${Request.forumdata.I18n.getMessage("Moderation.ConfirmPostDelete")}")) {
-			var reason = prompt("${I18n.getMessage("ModerationLog.changeReason")}");
+			var reason = prompt("${Request.forumdata.I18n.getMessage("ModerationLog.changeReason")}");
 
 			if (reason == null || reason == "") {
-				alert("${I18n.getMessage("ModerationLog.reasonIsEmpty")}");
+				alert("${Request.forumdata.I18n.getMessage("ModerationLog.reasonIsEmpty")}");
 				return false;
 			}
 			else {
@@ -336,7 +336,7 @@
 					<form action="${Request.forumdata.JForumContext.encodeURL("/jforum")}" method="post" name="formModeration" id="formModeration">
 					<input type="hidden" name="action" value="doModeration" />
 					<input type="hidden" name="module" value="moderation" />
-					<input type="hidden" name="returnUrl" value="${Request.forumdata.JForumContext.encodeURL("/${Request.forumdata.moduleName}/${Request.forumdata.action}/${Request.forumdata.start}/${Request.forumdata.topic.id}")}" />
+					<input type="hidden" name="returnUrl" value="${Request.forumdata.JForumContext.encodeURL("/${Request.forumdata.start}/${Request.forumdata.topic.id}")}" />
 					<input type="hidden" name="forum_id" value="${Request.forumdata.topic.forumId}" />
 					<input type="hidden" name="topic_id" value="${Request.forumdata.topic.id}" />
 					<input type="hidden" name="log_type" value="0"/>
@@ -356,19 +356,19 @@
 				<tr>
 					<td align="left" valign="top" class="gensmall">
 						<#if logged>
-							<#if bookmarksEnabled>
+							<#if Request.forumdata.bookmarksEnabled>
 								<a href="javascript:addBookmark(2, ${Request.forumdata.topic.id});"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_bookmark.gif" align="middle"  alt="XML" />&nbsp;${Request.forumdata.I18n.getMessage("Bookmarks.addTo")}</a>
 								<br>
 							</#if>
 						
-							<#if !watching>
-								<#assign watchMessage = I18n.getMessage("PostShow.watch")/>
+							<#if !Request.forumdata.watching>
+								<#assign watchMessage = Request.forumdata.I18n.getMessage("PostShow.watch")/>
 								<a href="#watch" onClick="watchTopic('${Request.forumdata.JForumContext.encodeURL("/posts/watch/${Request.forumdata.start}/${Request.forumdata.topic.id}")}', '${Request.forumdata.I18n.getMessage("PostShow.confirmWatch")}');">
 							<#else>
-								<#assign watchMessage = I18n.getMessage("PostShow.unwatch")/>
+								<#assign watchMessage = Request.forumdata.I18n.getMessage("PostShow.unwatch")/>
 								<a href="${Request.forumdata.JForumContext.encodeURL("/posts/unwatch/${Request.forumdata.start}/${Request.forumdata.topic.id}")}">
 							</#if>
-							<img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/watch.gif" align="middle" alt="Watch" />&nbsp;${Request.forumdata.watchMessage}</a>
+							<img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/watch.gif" align="middle" alt="Watch" />&nbsp;${watchMessage}</a>
 						</#if>
 					</td>
 					<td align="right"><@presentation.forumsComboTable/></td>

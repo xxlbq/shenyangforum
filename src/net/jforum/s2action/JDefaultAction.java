@@ -19,18 +19,26 @@ import net.jforum.context.ResponseContext;
 import net.jforum.context.web.WebRequestContext;
 import net.jforum.context.web.WebResponseContext;
 import net.jforum.entities.Banlist;
+import net.jforum.exceptions.ForumException;
+import net.jforum.exceptions.TemplateNotFoundException;
 import net.jforum.repository.BanlistRepository;
 import net.jforum.repository.SecurityRepository;
 import net.jforum.repository.Tpl;
 import net.jforum.util.I18n;
 import net.jforum.util.preferences.ConfigKeys;
 import net.jforum.util.preferences.SystemGlobals;
+import net.jforum.util.preferences.TemplateKeys;
 
 import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.util.logging.Logger;
 
 import freemarker.template.SimpleHash;
+import freemarker.template.Template;
 
 public class JDefaultAction extends ActionSupport{
+	
+	
+	
 	private static boolean isDatabaseUp;
 	protected String templateName;
 	protected RequestContext request;
@@ -183,4 +191,61 @@ public class JDefaultAction extends ActionSupport{
 //			}
 //		}
 	}
+	private boolean ignoreAction;
+	private static Class[] NO_ARGS_CLASS = new Class[0];
+	private static Object[] NO_ARGS_OBJECT = new Object[0];
+	protected void ignoreAction()
+	{
+		this.ignoreAction = true;
+	}
+	public Template process(RequestContext request, ResponseContext response, SimpleHash context)
+	{
+		this.request = request;
+		this.response = response;
+		this.context = context;
+		
+		String action = this.request.getAction();
+
+		if (!this.ignoreAction) {
+			try {
+				this.getClass().getMethod(action, NO_ARGS_CLASS).invoke(this, NO_ARGS_OBJECT);
+			}
+			catch (NoSuchMethodException e) {
+				
+//				this.list();		
+			}
+			catch (Exception e)
+            {
+                throw new ForumException(e);
+			}
+		}
+		
+		if (JForumExecutionContext.getRedirectTo() != null) {
+			this.setTemplateName(TemplateKeys.EMPTY);
+		}
+		else if (request.getAttribute("template") != null) {
+			this.setTemplateName((String)request.getAttribute("template"));
+		}
+		
+		if (JForumExecutionContext.isCustomContent()) {
+			return null;
+		}
+		
+		if (this.templateName == null) {
+			throw new TemplateNotFoundException("Template for action " + action + " is not defined");
+		}
+
+        try {
+//            return JForumExecutionContext.templateConfig().getTemplate(
+//                new StringBuffer(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR)).
+//                append('/').append(this.templateName).toString());
+        	
+        	return null;
+        }
+        catch (Exception e) {
+            throw new ForumException( e);
+        }
+    }
+	
+	
 }
