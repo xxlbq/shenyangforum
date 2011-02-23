@@ -78,12 +78,12 @@ Modifications by JForum Team
 										</span>
 
 										<#if ! Request.forumdata.sso>
-											<a id="logout" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/logout")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_login.gif" border="0" alt="[Login]" /> ${Request.forumdata.I18n.getMessage("ForumBase.logout")} [${Request.forumdata.session.username}] </a></span>
+											<a id="logout" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/logout.action")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_login.gif" border="0" alt="[Login]" /> ${Request.forumdata.I18n.getMessage("ForumBase.logout")} [${Request.forumdata.session.username}] </a></span>
 										</#if>
 									</#if>
 	
 									<#if !Request.forumdata.logged && !Request.forumdata.sso>
-										<a id="register" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/insert")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_register.gif" border="0" alt="[Register]" /> ${Request.forumdata.I18n.getMessage("ForumBase.register")}</a>&nbsp;/&nbsp;</span>
+										<a id="register" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/shownew.action")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_register.gif" border="0" alt="[Register]" /> ${Request.forumdata.I18n.getMessage("ForumBase.register")}</a>&nbsp;/&nbsp;</span>
 										<a id="login" class="mainmenu" href="${Request.forumdata.JForumContext.encodeURL("/user/login.action")}"><img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_mini_login.gif" border="0" alt="[Login]" /> ${Request.forumdata.I18n.getMessage("ForumBase.login")}</a>&nbsp; </span>
 										
 									</#if>

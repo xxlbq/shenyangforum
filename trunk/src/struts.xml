@@ -24,6 +24,13 @@
 	
 	<package name="user" extends="struts-default">
 	
+		<action name="shownew" class="net.jforum.s2action.JUserAction" method="shownew">
+			<result name="success" type="freemarker" >/templates/default/user_new.flt</result>
+		</action>
+		<action name="saveNew" class="net.jforum.s2action.JUserAction" method="insertSave">
+			<result name="success" type="freemarker" >/index.htm</result>
+		</action>
+		
 		<action name="login" class="net.jforum.s2action.JUserAction" method="login">
 			<result name="success" type="freemarker" >/templates/default/forum_login.flt</result>
 		</action>
@@ -34,7 +41,9 @@
 			</result>
 			<result name="error"   type="freemarker" >/templates/default/forum_login.flt</result>
 		</action>
-		
+		<action name="logout" class="net.jforum.s2action.JUserAction" method="logout">
+			<result name="success" type="freemarker" >/index.htm</result>
+		</action>
 	</package>
 	
 <!--	-->
