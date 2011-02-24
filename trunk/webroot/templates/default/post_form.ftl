@@ -1,18 +1,18 @@
 <#include "header.ftl"/>
-<#assign preview = preview?default(false)/>
+<#assign preview = Request.forumdata.preview?default(false)/>
 <#assign logModeration = Request.forumdata.moderationLoggingEnabled && Request.forumdata.isEdit?default(false) && Request.forumdata.isModerator && user.id != post.userId/>
-<#assign allowPoll = setType?default(true) && canCreatePolls?default(false)/>
+<#assign allowPoll = Request.forumdata.setType?default(true) && Request.forumdata.canCreatePolls?default(false)/>
 
 <script type="text/javascript">
 var CONTEXTPATH = "${Request.forumdata.contextPath}";
 var SERVLET_EXTENSION  = "${Request.forumdata.extension}";
 </script>
 
-<style type="text/css">@import url( ${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/styles/tabs.css?${startupTime} );</style>
-<style type="text/css">@import url( ${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/styles/SyntaxHighlighter.css?${startupTime} );</style>
+<style type="text/css">@import url( ${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/styles/tabs.css?${Application.startupTime} );</style>
+<style type="text/css">@import url( ${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/styles/SyntaxHighlighter.css?${Application.startupTime} );</style>
 
-<script type="text/javascript" src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/js/jquery.js?${startupTime}"></script>
-<script type="text/javascript" src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/js/post.js?${startupTime}"></script>
+<script type="text/javascript" src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/js/jquery.js?${Application.startupTime}"></script>
+<script type="text/javascript" src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/js/post.js?${Application.startupTime}"></script>
 
 <script type="text/javascript">
 <#include "js/bbcode_help.js"/>
@@ -85,13 +85,13 @@ function smiliePopup()
 -->
 </script>
 
-<#assign preview = preview?exists && preview/>
-<#assign isNewPost = isNewPost?exists && isNewPost/>
-<#assign isEdit = isEdit?if_exists/>
+<#assign preview = Request.forumdata.preview?exists && Request.forumdata.preview/>
+<#assign isNewPost = Request.forumdata.isNewPost?exists && Request.forumdata.isNewPost/>
+<#assign isEdit = Request.forumdata.isEdit?if_exists/>
 <#assign isNewTopic = (!topic?exists || topic.id == -1)/>
-<#assign attachmentsEnabled = attachmentsEnabled?exists && attachmentsEnabled/>
+<#assign attachmentsEnabled = Request.forumdata.attachmentsEnabled?exists && Request.forumdata.attachmentsEnabled/>
 
-<#if !maxAttachments?exists>
+<#if !Request.forumdata.maxAttachments?exists>
 	<#assign maxAttachments = 0/>
 </#if>
 
@@ -102,10 +102,10 @@ function smiliePopup()
 <#assign smiliesChecked = ""/>
 
 <#if isNewPost && !preview && !post?exists>
-	<#if user.isHtmlEnabled()><#assign htmlChecked = ""/></#if>
-	<#if !user.isBbCodeEnabled()><#assign bbChecked = "checked=\"checked\""/></#if>
-	<#if !user.isSmiliesEnabled()><#assign smiliesChecked = "checked=\"checked\""/></#if>
-	<#if !user.getAttachSignatureEnabled()><#assign signatureChecked = ""/></#if>
+	<#if Request.forumdata.user.isHtmlEnabled()><#assign htmlChecked = ""/></#if>
+	<#if !Request.forumdata.user.isBbCodeEnabled()><#assign bbChecked = "checked=\"checked\""/></#if>
+	<#if !Request.forumdata.user.isSmiliesEnabled()><#assign smiliesChecked = "checked=\"checked\""/></#if>
+	<#if !Request.forumdata.user.getAttachSignatureEnabled()><#assign signatureChecked = ""/></#if>
 <#elseif post?exists>
 	<#if post.isHtmlEnabled()><#assign htmlChecked = ""/></#if>
 	<#if !post.isBbCodeEnabled()><#assign bbChecked = "checked=\"checked\""/></#if>
@@ -118,8 +118,8 @@ function smiliePopup()
 <form action="${Request.forumdata.JForumContext.encodeURL("/jforum")}" method="post" enctype="multipart/form-data" name="post" id="post" onsubmit="return validatePostForm(this)">
 
 <input type="hidden" name="preview" value="0"/>
-<#if forum?exists><input type="hidden" name="forum_id" value="${forum.id}" /></#if>
-<input type="hidden" name="start" value="${start?default("")}" />
+<#if Request.forumdata.forum?exists><input type="hidden" name="forum_id" value="${Request.forumdata.forum.id}" /></#if>
+<input type="hidden" name="start" value="${Request.forumdata.start?default("")}" />
 <#if isEdit><input type="hidden" name="post_id" value="${post.id}" /></#if>
 <#if !isNewTopic><input type="hidden" name="topic_id" value="${topic.id}" /></#if>
 
@@ -136,14 +136,14 @@ function smiliePopup()
 				<tr>
 					<td class="row1">
 						<img src="${Request.forumdata.contextPath}/templates/${Request.forumdata.templateName}/images/icon_minipost.gif" alt="Post" />
-						<span class="postdetails" id="previewSubject"> ${Request.forumdata.I18n.getMessage("PostForm.subject")}: <#if postPreview?exists>${postPreview.subject?html}</#if></span>
+						<span class="postdetails" id="previewSubject"> ${Request.forumdata.I18n.getMessage("PostForm.subject")}: <#if Request.forumdata.postPreview?exists>${Request.forumdata.postPreview.subject?html}</#if></span>
 					</td>
 				</tr>
 				<tr>
 					<td class="row1" height="100%">
 						<table width="100%" border="0" cellspacing="0" cellpadding="0" style="height:100%">
 							<tr>
-								<td><span id="previewMessage" class="postbody"><#if postPreview?exists>${postPreview.text}</#if></span></td>
+								<td><span id="previewMessage" class="postbody"><#if Request.forumdata.postPreview?exists>${Request.forumdata.postPreview.text}</#if></span></td>
 							</tr>
 						</table>
 					</td>
@@ -160,8 +160,8 @@ function smiliePopup()
 						<span class="nav">
 							<a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/list")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")}</a>
 
-							<#if forum?exists>
-							&raquo; <a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/show/${forum.id}")}">${forum.name}</a>
+							<#if Request.forumdata.forum?exists>
+							&raquo; <a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/show/${Request.forumdata.forum.id}")}">${Request.forumdata.forum.name}</a>
 							</#if>
 						</span>
 					</td>
@@ -172,7 +172,7 @@ function smiliePopup()
 				<tr>
 					<th class="thhead" colspan="2" height="25">
 						<b>
-						<#if forum?exists>
+						<#if Request.forumdata.forum?exists>
 							<#if (topic?exists && topic.id > -1)>
 							    <#if isEdit>
 							    	${Request.forumdata.I18n.getMessage("PostForm.edit")} "${topic.title?html}"
@@ -193,7 +193,7 @@ function smiliePopup()
 					</th>
 				</tr>
 
-				<#if !forum?exists>
+				<#if !Request.forumdata.forum?exists>
 					<tr>
 						<td class="row1" width="15%"><span class="gen"><b>${Request.forumdata.I18n.getMessage("PrivateMessage.user")}</b></span></td>
 						<td class="row2" width="85%">
@@ -218,9 +218,9 @@ function smiliePopup()
 					</tr>
 				</#if>
 
-				<#if errorMessage?exists>
+				<#if Request.forumdata.errorMessage?exists>
 					<tr>
-						<td colspan="2" align="center"><span class="gen"><font color="#ff0000"><b>${errorMessage}</b></font></span></td>
+						<td colspan="2" align="center"><span class="gen"><font color="#ff0000"><b>${Request.forumdata.errorMessage}</b></font></span></td>
 					</tr>
 				</#if>
 
@@ -387,7 +387,7 @@ function smiliePopup()
 						<#if allowPoll>
 							<div id="postPoll" class="postTabContents" style="display: none;">
 								<div>
-									<#include "post_poll_tab.htm"/>
+									<#include "post_poll_tab.ftl"/>
 								</div>
 							</div>
 						</#if>
@@ -396,14 +396,14 @@ function smiliePopup()
 						<#if attachmentsEnabled || attachments?exists>
 							<div id="postAttachments" class="postTabContents" style="display: none; ">
 								<div>
-									<#include "post_attachments_tab.htm"/>
+									<#include "post_attachments_tab.ftl"/>
 								</div>
 							</div>
 						</#if>
 					</td>
 				</tr
 
-				<#if needCaptcha?default(false)>
+				<#if Request.forumdata.needCaptcha?default(false)>
 					<tr>
 						<td class="row1" valign="middle"><span class="gensmall"><b>${Request.forumdata.I18n.getMessage("User.captchaResponse")}:</b></span></td>
 						<td class="row2">
