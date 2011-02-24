@@ -265,7 +265,7 @@
 				<tr>
 					<#if !Request.forumdata.readonly && !Request.forumdata.replyOnly>
 						<td valign="middle"  align="left" width="50">
-							<a href="${Request.forumdata.JForumContext.encodeURL("/jforum${Request.forumdata.extension}?module=posts&amp;action=insert&amp;forum_id=${Request.forumdata.forum.id}","")}" rel="nofollow" class="icon_new_topic"><img src="${Request.forumdata.contextPath}/images/transp.gif" alt="" /></a>
+							<a href="${Request.forumdata.JForumContext.encodeURL("/post/insert.action?forum_id=${Request.forumdata.forum.id}","")}" rel="nofollow" class="icon_new_topic"><img src="${Request.forumdata.contextPath}/images/transp.gif" alt="" /></a>
 						</td>
 					<#else>
 						<#assign colspan = "2"/>
@@ -273,7 +273,7 @@
 
 					<td valign="middle"  align="left" colspan="${colspan?default("0")}">
 						<span class="nav">
-						<a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/list")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")}</a> &raquo;  <a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/show/${Request.forumdata.forum.id}")}">${Request.forumdata.forum.name?html}</a></span>
+						<a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/list.action")}">${Request.forumdata.I18n.getMessage("ForumListing.forumIndex")}</a> &raquo;  <a class="nav" href="${Request.forumdata.JForumContext.encodeURL("/forums/show/${Request.forumdata.forum.id}")}">${Request.forumdata.forum.name?html}</a></span>
 					</td>
 
 					<td nowrap="nowrap" align="right" class="nav">${paginationData}</td>
