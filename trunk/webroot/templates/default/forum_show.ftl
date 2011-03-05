@@ -1,5 +1,5 @@
 <#include "header.ftl"/>
-
+<#assign thisPage = Request.forumdata.thisPage/>
 <#import "../macros/pagination.ftl" as pagination>
 <#import "../macros/presentation.ftl" as presentation/>
 

@@ -12,6 +12,7 @@
 		</action>
 		<action name="show" class="net.jforum.s2action.JForumAction" method="show">
 			<result name="success" type="freemarker" >/templates/default/forum_show.ftl</result>
+			<result name="error" type="freemarker" >/error_common.htm</result>
 		</action>
 
 	</package>
@@ -24,6 +25,17 @@
 		<action name="insert" class="net.jforum.s2action.JPostAction" method="insert">
 			<result name="success" type="freemarker" >/templates/default/post_form.ftl</result>
 		</action>
+		
+		<action name="insertSave" class="net.jforum.s2action.JPostAction" method="insertSave">
+<!--			<result name="success" type="redirect" >${redirectUrl}</result>-->
+			<result name="success" type="redirect" >/forums/show.action?fid=${redirect_forumId}</result>
+			
+		</action>
+		
+		<action name="reply" class="net.jforum.s2action.JPostAction" method="reply">
+			<result name="success" type="freemarker" >/templates/default/post_form.ftl</result>
+		</action>
+		
 		
 	</package>
 	

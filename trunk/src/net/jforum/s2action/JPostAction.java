@@ -115,6 +115,20 @@ import freemarker.template.SimpleHash;
  */
 public class JPostAction extends JDefaultAction 
 {private static Logger logger = Logger.getLogger(JPostAction.class);
+	String redirect_forumId;
+	
+
+
+
+
+	public String getRedirect_forumId() {
+		return redirect_forumId;
+	}
+
+	public void setRedirect_forumId(String redirect_forumId) {
+		this.redirect_forumId = redirect_forumId;
+	}
+
 	public JPostAction() {
 	}
 
@@ -166,7 +180,7 @@ public class JPostAction extends JDefaultAction
 	
 	public String insert()
 	{
-    	logger.info("===========>  JPostAction list method fired  <===========");
+    	logger.info("===========>  JPostAction insert method fired  <===========");
     	HttpServletRequest request = ServletActionContext.getRequest(); 
     	HttpServletResponse response = ServletActionContext.getResponse();
     	String s = null;
@@ -175,7 +189,7 @@ public class JPostAction extends JDefaultAction
 //    		forumList();
 			s = service(request, response);
 			if(s.equalsIgnoreCase(SUCCESS)){
-				s = doInsert();
+				s = doInsert(request, response);
 			}else if(s.equalsIgnoreCase(ERROR)){
 				logger.info("list service return error !");
 			}
@@ -547,17 +561,61 @@ public class JPostAction extends JDefaultAction
 				Integer.toString(forumId));
 	}
 	
-	public void reply()
+	public String reply()
 	{
-//		this.doInsert();
+		
+		
+		
+    	logger.info("===========>  JPostAction insert method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse();
+    	String s = null;
+//    	Writer out = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+				s = doreply(request, response);
+			}else if(s.equalsIgnoreCase(ERROR)){
+				logger.info("list service return error !");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
+//    	name = "Hello, " + name + "!"; 
+        return s;
+		
+		
 	}
 
-	public String doInsert()
+	private String doreply(HttpServletRequest request,
+			HttpServletResponse response) {
+		return doInsert(request,response);
+	}
+
+	public String doInsert(HttpServletRequest request, HttpServletResponse response)
 	{
 		int forumId;
 
 		// If we have a topic_id, then it should be a reply
-		if (this.request.getParameter("topic_id") != null) {
+		if (request.getParameter("topic_id") != null) {
 			int topicId = this.request.getIntParameter("topic_id");
 			
 			Topic t = TopicRepository.getTopic(new Topic(topicId));
@@ -1037,23 +1095,65 @@ public class JPostAction extends JDefaultAction
 		this.context.put("message", I18n.getMessage("PostShow.notModeratedYet"));
 	}
 
-	public void insertSave()
+	
+	public String insertSave(){
+
+    	logger.info("===========>  JPostAction insertSave method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse();
+    	String s = null;
+//    	Writer out = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+				s = doinsertSave(request, response);
+			}else if(s.equalsIgnoreCase(ERROR)){
+				logger.info("list service return error !");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
+//    	name = "Hello, " + name + "!"; 
+        return s;
+
+	
+	}
+	
+	public String doinsertSave(HttpServletRequest request, HttpServletResponse response)
 	{
-		int forumId = this.request.getIntParameter("forum_id");
+		int forumId = Integer.valueOf(request.getParameter("forum_id"));
 		boolean firstPost = false;
 
 		if (!this.anonymousPost(forumId)) {
-			return;
+			return ERROR;
 		}
 		
 		Topic t = new Topic(-1);
 		t.setForumId(forumId);
 
-		boolean newTopic = (this.request.getParameter("topic_id") == null);
+		boolean newTopic = (request.getParameter("topic_id") == null);
 		
 		if (!TopicsCommon.isTopicAccessible(t.getForumId())
 				|| this.isForumReadonly(t.getForumId(), newTopic)) {
-			return;
+			return ERROR;
 		}
 
 		TopicDAO topicDao = DataAccessDriver.getInstance().newTopicDAO();
@@ -1062,7 +1162,7 @@ public class JPostAction extends JDefaultAction
 		ForumDAO forumDao = DataAccessDriver.getInstance().newForumDAO();
 
 		if (!newTopic) {
-			int topicId = this.request.getIntParameter("topic_id");
+			int topicId = Integer.valueOf(request.getParameter("topic_id"));
 			
 			t = TopicRepository.getTopic(new Topic(topicId));
 			
@@ -1076,13 +1176,13 @@ public class JPostAction extends JDefaultAction
 			}
 			else {
 				if (!TopicsCommon.isTopicAccessible(t.getForumId())) {
-					return;
+					return ERROR;
 				}
 	
 				// Cannot insert new messages on locked topics
 				if (t.getStatus() == Topic.STATUS_LOCKED) {
 					this.topicLocked();
-					return;
+					return ERROR;
 				}
 			}
 		}
@@ -1092,11 +1192,11 @@ public class JPostAction extends JDefaultAction
 		if (newTopic) {
 			if (this.isReplyOnly(forumId)) {
 				this.replyOnly();
-				return;
+				return ERROR;
 			}
 			
-			if (this.request.getParameter("topic_type") != null) {
-				t.setType(this.request.getIntParameter("topic_type"));
+			if (request.getParameter("topic_type") != null) {
+				t.setType(Integer.valueOf(request.getParameter("topic_type")));
 				
 				if (t.getType() != Topic.TYPE_NORMAL 
 						&& !SecurityRepository.canAccess(SecurityConstants.PERM_CREATE_STICKY_ANNOUNCEMENT_TOPICS)) {
@@ -1108,7 +1208,7 @@ public class JPostAction extends JDefaultAction
 		UserSession us = SessionFacade.getUserSession();
 		User u = DataAccessDriver.getInstance().newUserDAO().selectById(us.getUserId());
 		
-		if ("1".equals(this.request.getParameter("quick")) && SessionFacade.isLogged()) {
+		if ("1".equals(request.getParameter("quick")) && SessionFacade.isLogged()) {
 			this.request.addParameter("notify", u.isNotifyOnMessagesEnabled() ? "1" : null);
 			this.request.addParameter("attach_sig", u.getAttachSignatureEnabled() ? "1" : "0");
 		}
@@ -1122,7 +1222,7 @@ public class JPostAction extends JDefaultAction
 		
 		if (p.getText() == null || p.getText().trim().equals("")) {
 			this.insert();
-			return;
+			return ERROR;
 		}
 		
 		// Check the elapsed time since the last post from the user
@@ -1134,36 +1234,36 @@ public class JPostAction extends JDefaultAction
 			if (lastPostTime != null) {
 				if (System.currentTimeMillis() < (lastPostTime.longValue() + delay)) {
 					this.context.put("post", p);
-					this.context.put("start", this.request.getParameter("start"));
+					this.context.put("start", request.getParameter("start"));
 					this.context.put("error", I18n.getMessage("PostForm.tooSoon"));
 					this.insert();
-					return;
+					return ERROR;
 				}
 			}
 		}
 		
-		p.setForumId(this.request.getIntParameter("forum_id"));
+		p.setForumId(Integer.valueOf(request.getParameter("forum_id")));
 		
 		if (StringUtils.isBlank(p.getSubject())) {
 			p.setSubject(t.getTitle());
 		}
 		
 		boolean needCaptcha = SystemGlobals.getBoolValue(ConfigKeys.CAPTCHA_POSTS)
-			&& request.getSessionContext().getAttribute(ConfigKeys.REQUEST_IGNORE_CAPTCHA) == null;
+			&& this.request.getSessionContext().getAttribute(ConfigKeys.REQUEST_IGNORE_CAPTCHA) == null;
 		
 		if (needCaptcha) {
-			if (!us.validateCaptchaResponse(this.request.getParameter("captcha_anwser"))) {
+			if (!us.validateCaptchaResponse(request.getParameter("captcha_anwser"))) {
 				this.context.put("post", p);
-				this.context.put("start", this.request.getParameter("start"));
+				this.context.put("start", request.getParameter("start"));
 				this.context.put("error", I18n.getMessage("CaptchaResponseFails"));
 				
 				this.insert();
 				
-				return;
+				return ERROR;
 			}
 		}
 
-		boolean preview = "1".equals(this.request.getParameter("preview"));
+		boolean preview = "1".equals(request.getParameter("preview"));
 		
 		if (!preview) {
 			AttachmentCommon attachments = new AttachmentCommon(this.request, forumId);
@@ -1173,12 +1273,12 @@ public class JPostAction extends JDefaultAction
 			}
 			catch (AttachmentException e) {
 				JForumExecutionContext.enableRollback();
-				p.setText(this.request.getParameter("message"));
+				p.setText(request.getParameter("message"));
 				p.setId(0);
 				this.context.put("errorMessage", e.getMessage());
 				this.context.put("post", p);
 				this.insert();
-				return;
+				return ERROR;
 			}
 			
 			Forum forum = ForumRepository.getForum(forumId);
@@ -1191,7 +1291,7 @@ public class JPostAction extends JDefaultAction
 			
 			if (newTopic) {
 				t.setTime(new Date());
-				t.setTitle(this.request.getParameter("subject"));
+				t.setTitle(request.getParameter("subject"));
 				t.setModerated(moderate);
 				t.setPostedBy(u);
 				t.setFirstPostTime(ViewCommon.formatDate(t.getTime()));
@@ -1207,7 +1307,7 @@ public class JPostAction extends JDefaultAction
 			}
 
 			// Topic watch
-			if (this.request.getParameter("notify") != null) {
+			if (request.getParameter("notify") != null) {
 				this.watch(topicDao, t.getId(), u.getId());
 			}
 
@@ -1222,13 +1322,13 @@ public class JPostAction extends JDefaultAction
 				if (poll.getOptions().size() < 2) {
 					//it is not a valid poll, cancel the post
 					JForumExecutionContext.enableRollback();
-					p.setText(this.request.getParameter("message"));
+					p.setText(request.getParameter("message"));
 					p.setId(0);
 					this.context.put("errorMessage", I18n.getMessage("PostForm.needMorePollOptions"));
 					this.context.put("post", p);
 					this.context.put("poll", poll);
 					this.insert();
-					return;
+					return ERROR;
 				}
 				
 				poolDao.addNew(poll);
@@ -1256,7 +1356,7 @@ public class JPostAction extends JDefaultAction
 			
 			if (!moderate) {
 				StringBuffer path = new StringBuffer(512);
-				path.append(this.request.getContextPath()).append("/posts/list/");
+				path.append(request.getContextPath()).append("/posts/list/");
 				
 				int start = ViewCommon.getStartPage();
 	
@@ -1264,7 +1364,8 @@ public class JPostAction extends JDefaultAction
 					.append(t.getId()).append(SystemGlobals.getValue(ConfigKeys.SERVLET_EXTENSION))
 					.append('#').append(postId);
 	
-				JForumExecutionContext.setRedirect(path.toString());
+//				JForumExecutionContext.setRedirect(path.toString());
+//				JForumExecutionContext.setRedirect(path.toString());
 				
 				if (newTopic) {
 					// Notify "forum new topic" users
@@ -1298,11 +1399,11 @@ public class JPostAction extends JDefaultAction
 				}
 			}
 			else {
-				JForumExecutionContext.setRedirect(this.request.getContextPath() 
-					+ "/posts/waitingModeration/" 
-					+ (firstPost ? 0 : t.getId())
-					+ "/" + t.getForumId()
-					+ SystemGlobals.getValue(ConfigKeys.SERVLET_EXTENSION));
+//				JForumExecutionContext.setRedirect(request.getContextPath() 
+//					+ "/posts/waitingModeration/" 
+//					+ (firstPost ? 0 : t.getId())
+//					+ "/" + t.getForumId()
+//					+ SystemGlobals.getValue(ConfigKeys.SERVLET_EXTENSION));
 			}
 			
 			if (delay > 0) {
@@ -1312,13 +1413,21 @@ public class JPostAction extends JDefaultAction
 		else {
 			this.context.put("preview", true);
 			this.context.put("post", p);
-			this.context.put("start", this.request.getParameter("start"));
+			this.context.put("start", request.getParameter("start"));
 
 			Post postPreview = new Post(p);
 			this.context.put("postPreview", PostCommon.preparePostForDisplay(postPreview));
 
 			this.insert();
 		}
+		
+//		this.redirectUrl = "/forums/show.action?fid="+String.valueOf(forumId);
+		this.redirect_forumId =String.valueOf(forumId);
+//		logger.info("after post ,url redirect :"+redirectUrl);
+		
+		
+		logger.info("after post , redirect forumId :"+forumId);
+		return SUCCESS;
 	}
 
 	private int startPage(Topic t, int currentStart) {

@@ -115,7 +115,31 @@ function smiliePopup()
 
 <#if !Request.forumdata.user.isNotifyOnMessagesEnabled()><#assign repliesChecked = ""/></#if>
 
-<form action="${Request.forumdata.JForumContext.encodeURL("/jforum")}" method="post" enctype="multipart/form-data" name="post" id="post" onsubmit="return validatePostForm(this)">
+
+
+
+
+						<#if Request.forumdata.forum?exists>
+							<#if (topic?exists && topic.id > -1)>
+							    <#if isEdit>
+							    	${Request.forumdata.I18n.getMessage("PostForm.edit")} "${topic.title?html}"
+							    <#else>
+									<form action="${Request.forumdata.JForumContext.encodeURL("/jforum/post/reply.action")}?fid=${Request.forumdata.forum.id}&topic_id=${topic.id}" method="post" enctype="multipart/form-data" name="post" id="post" onsubmit="return validatePostForm(this)">
+								</#if>
+							<#else>
+								<form action="${Request.forumdata.JForumContext.encodeURL("/jforum/post/insertSave.action")}?fid=${Request.forumdata.forum.id}" method="post" enctype="multipart/form-data" name="post" id="post" onsubmit="return validatePostForm(this)">
+							</#if>
+						<#else>
+							<#if pmReply?default(false)>
+								${Request.forumdata.I18n.getMessage("PrivateMessage.reply")}
+							<#else>
+								${Request.forumdata.I18n.getMessage("PrivateMessage.title")}
+							</#if>
+						</#if>
+
+
+
+
 
 <input type="hidden" name="preview" value="0"/>
 <#if Request.forumdata.forum?exists><input type="hidden" name="forum_id" value="${Request.forumdata.forum.id}" /></#if>

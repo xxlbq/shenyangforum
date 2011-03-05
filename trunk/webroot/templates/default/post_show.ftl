@@ -225,7 +225,7 @@
 						<span class="icon_reply_locked"><img src="${Request.forumdata.contextPath}/images/transp.gif" alt="" /></span>
 					<#else>
 						<#if !Request.forumdata.readonly>
-							<a href="${Request.forumdata.JForumContext.encodeURL("/posts/reply/${Request.forumdata.start}/${Request.forumdata.topic.id}")}" rel="nofollow" class="icon_reply nav"><img src="${Request.forumdata.contextPath}/images/transp.gif" alt="" /></a>
+							<a href="${Request.forumdata.JForumContext.encodeURL("/posts/reply.action?start=${Request.forumdata.start}&topic_id=${Request.forumdata.topic.id}")}" rel="nofollow" class="icon_reply nav"><img src="${Request.forumdata.contextPath}/images/transp.gif" alt="" /></a>
 						<#else>
 							<#assign colspan = "2"/>
 						</#if>
