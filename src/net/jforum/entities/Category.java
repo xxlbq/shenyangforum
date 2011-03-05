@@ -92,7 +92,7 @@ public class Category  implements Serializable
 	public List takeForums(){
 		
 		for (Object o: forums) {
-			logger.info((Forum)o) ; 
+//			logger.info((Forum)o) ; 
 		}
 		
 		return this.forums;
@@ -343,12 +343,12 @@ public class Category  implements Serializable
 	 */
 	public List getForums()
 	{
-		logger.info("1  getForums forums size:"+forums.size());
+//		logger.info("1  getForums forums size:"+forums.size());
 		if (this.forums.size() != 0) {
 			return this.forums;
 		}
 		List r = getForums(SessionFacade.getUserSession().getUserId());
-		logger.info("2  getForums forums size:"+r.size());
+//		logger.info("2  getForums forums size:"+r.size());
 		return r;
 	}
 

@@ -1,3 +1,9 @@
+<#assign totalPages = Request.forumdata.totalPages/>
+<#assign recordsPerPage = Request.forumdata.recordsPerPage/>
+<#assign totalRecords = Request.forumdata.totalRecords/>
+<#assign thisPage = Request.forumdata.thisPage/>
+<#assign start = Request.forumdata.start/>
+
 <#macro littlePostPagination topicId postsPerPage totalReplies>
 	[ <img class="icon_latest_reply" src="${Request.forumdata.contextPath}/images/transp.gif" alt="" /> ${Request.forumdata.I18n.getMessage("goToPage")}: 
 
@@ -21,7 +27,7 @@
 	<#list 1 .. minTotal as page>
 		<#assign start = postsPerPage * (page - 1)/>
 
-		<#assign link>${link}<a href="${contextPath}/posts/list<#if (start>0)>/${start}</#if>/${topicId}${extension}">${page}</a></#assign>
+		<#assign link>${link}<a href="${Request.forumdata.contextPath}/posts/list<#if (start>0)>/${start}</#if>/${topicId}${extension}">${page}</a></#assign>
 		<#if (page < minTotal)><#assign link>${link}, </#assign></#if>		
 	</#list>
 
@@ -113,16 +119,16 @@
 		<#-- ------------- -->
 		<#if (thisPage < totalPages)>
 			<#assign start = thisPage * recordsPerPage/>
-			<a href="${contextPath}/${moduleName}/${action}<#if (start > 0)>/${start}</#if><#if (id > -1)>/${id}</#if>${extension}">&#9658;</a>
+			<a href="${Request.forumdata.contextPath}/moduleName/action<#if (start > 0)>/${start}</#if><#if (id > -1)>/${id}</#if>extension">&#9658;</a>
 		</#if>
 
-		<a href="#goto" onClick="return overlay(this, 'goToBox', 'rightbottom');">${I18n.getMessage("ForumIndex.goToGo")}</a>
+		<a href="#goto" onClick="return overlay(this, 'goToBox', 'rightbottom');">${Request.forumdata.I18n.getMessage("ForumIndex.goToGo")}</a>
 		<div id="goToBox">
-			<div class="title">${I18n.getMessage("goToPage")}...</div>
+			<div class="title">${Request.forumdata.I18n.getMessage("goToPage")}...</div>
 			<div class="form">
 				<input type="text" style="width: 50px;" id="pageToGo">
-				<input type="button" value=" ${I18n.getMessage("ForumIndex.goToGo")} " onClick="goToAnotherPage(${totalPages}, ${recordsPerPage}, '${contextPath}', '${moduleName}', '${action}', ${id}, '${extension}');">
-				<input type="button" value="${I18n.getMessage("cancel")}" onClick="document.getElementById('goToBox').style.display = 'none';">
+				<input type="button" value=" ${Request.forumdata.I18n.getMessage("ForumIndex.goToGo")} " onClick="goToAnotherPage(${totalPages}, ${recordsPerPage}, '${Request.forumdata.contextPath}', 'moduleName', 'action', ${id}, 'extension');">
+				<input type="button" value="${Request.forumdata.I18n.getMessage("Cancel")}" onClick="document.getElementById('goToBox').style.display = 'none';">
 			</div>
 		</div>
 
@@ -133,7 +139,7 @@
 <#macro pageLink page id>
 	<#assign start = recordsPerPage * (page - 1)/>
 	<#if page != thisPage>
-		<#assign link><a href="${contextPath}/${moduleName}/${action}<#if (start > 0)>/${start}</#if><#if (id > -1)>/${id}</#if>${extension}">${page}</a></#assign>
+		<#assign link><a href="${Request.forumdata.contextPath}/Request.forumdata.moduleName/Request.forumdata.action<#if (start > 0)>/${start}</#if><#if (id > -1)>/${id}</#if>${Request.forumdata.extension}">${page}</a></#assign>
 	<#else>
 		<#assign link><span class="current">${page}</span></#assign>
 	</#if>

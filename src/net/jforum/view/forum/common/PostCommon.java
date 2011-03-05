@@ -50,6 +50,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+
 import net.jforum.JForumExecutionContext;
 import net.jforum.SessionFacade;
 import net.jforum.context.RequestContext;
@@ -292,7 +296,8 @@ public class PostCommon
 
 	public static Post fillPostFromRequest(Post p, boolean isEdit) 
 	{
-		RequestContext request = JForumExecutionContext.getRequest();
+//		RequestContext request = JForumExecutionContext.getRequest();
+		HttpServletRequest request = ServletActionContext.getRequest();
 		
 		p.setSubject(request.getParameter("subject"));
 		p.setBbCodeEnabled(request.getParameter("disable_bbcode") == null);

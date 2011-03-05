@@ -264,16 +264,16 @@ public class ForumRepository implements Cacheable
 		
 		for (Iterator iter = categoriesSet.iterator(); iter.hasNext(); ) {
 			Category c = getCategory(pc, ((Category)iter.next()).getId());
-			logger.info(">>>>>>>>>> Category forum:"+c.getForums().size());
+//			logger.info(">>>>>>>>>> Category forum:"+c.getForums().size());
 			for (Iterator tmpIterator = c.getForums().iterator(); tmpIterator.hasNext(); ) {
 				Forum f = (Forum)tmpIterator.next();
 				
 
-				logger.info(">>>>>>>>>> forum:"+f);
+//				logger.info(">>>>>>>>>> forum:"+f);
 				f= ForumRepository.getForum(f.getId());
 				LastPostInfo lp = fr.getLastPostInfo(f);
 				f.setLastPostInfo(lp);
-				logger.info(">>>>>>>>>> forum:"+f);
+//				logger.info(">>>>>>>>>> forum:"+f);
 //				ForumCommon.checkUnreadPosts(uf, tracking, lastVisit);
 			}
 			

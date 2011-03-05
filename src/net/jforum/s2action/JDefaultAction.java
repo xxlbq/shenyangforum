@@ -111,7 +111,7 @@ public class JDefaultAction extends ActionSupport{
 				}
 				else {
 //					moduleClass = ModulesRepository.getModuleClass("forums");
-//					context.put("moduleName", "forums");
+					context.put("moduleName", "forums");
 					((WebRequestContext)request).changeAction("banned");
 				}
 				

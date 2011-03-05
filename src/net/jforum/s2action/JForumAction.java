@@ -51,6 +51,7 @@ import net.jforum.view.forum.common.PostCommon;
 import net.jforum.view.forum.common.TopicsCommon;
 import net.jforum.view.forum.common.ViewCommon;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
@@ -62,7 +63,7 @@ import freemarker.template.Template;
 public class JForumAction extends JDefaultAction {
 	
 	private static Logger logger = Logger.getLogger(JForumAction.class);
-
+	
 //    private String name;
 //    private String message;
 //    
@@ -77,7 +78,10 @@ public class JForumAction extends JDefaultAction {
 //        this.name = name;
 //    }
     
-    
+
+
+
+
 	private static Class[] NO_ARGS_CLASS = new Class[0];
 	private static Object[] NO_ARGS_OBJECT = new Object[0];
 	
@@ -86,7 +90,7 @@ public class JForumAction extends JDefaultAction {
 
 	
 	
-	private int fid ;
+	private String fid ;
 	
 //	protected void setTemplateName(String templateName)
 //	{
@@ -101,6 +105,8 @@ public class JForumAction extends JDefaultAction {
 
 
 
+
+
 	protected void ignoreAction()
 	{
 		this.ignoreAction = true;
@@ -108,14 +114,12 @@ public class JForumAction extends JDefaultAction {
     
     
     
-    public int getFid() {
-		return fid;
+    public void setFid(String fid) {
+		this.fid = fid;
 	}
 
-
-
-	public void setFid(int fid) {
-		this.fid = fid;
+	public String getFid() {
+		return fid;
 	}
 
 
@@ -170,7 +174,7 @@ public class JForumAction extends JDefaultAction {
 //    		forumList();
 			s = service(request, response);
 			if(s.equalsIgnoreCase(SUCCESS)){
-				forumShow();
+				s =forumShow(request, response);
 			}else if(s.equalsIgnoreCase(ERROR)){
 				
 			}
@@ -377,14 +381,19 @@ public class JForumAction extends JDefaultAction {
 	
 	
 	
-	public void forumShow()
+	public String forumShow(HttpServletRequest request, HttpServletResponse response)
 	
 	
 	{
 		logger.info("forumShow()   fid="+fid);
 //		logger.info("request fid:"+this.request.getIntParameter("forum_id"));
 //		int forumId = this.request.getIntParameter("forum_id");
-		int forumId = fid;
+		int forumId ;
+		if(StringUtils.isEmpty(fid)){
+			forumId = Integer.valueOf(request.getParameter("fid"));
+		}else{
+			forumId = Integer.valueOf(fid);
+		}
 		
 		ForumDAO fm = DataAccessDriver.getInstance().newForumDAO();
 
@@ -395,7 +404,7 @@ public class JForumAction extends JDefaultAction {
 		
 		if (forum == null || !ForumRepository.isCategoryAccessible(forum.getCategoryId())) {
 			new ModerationHelper().denied(I18n.getMessage("ForumListing.denied"));
-			return;
+			return ERROR;
 		}
 
 		int start = ViewCommon.getStartPage();
@@ -450,6 +459,8 @@ public class JForumAction extends JDefaultAction {
 
 		TopicsCommon.topicListingBase();
 		this.context.put("moderator", isLogged && isModerator);
+		
+		return SUCCESS;
 	}
 	
 	

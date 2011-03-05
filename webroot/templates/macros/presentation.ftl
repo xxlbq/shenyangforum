@@ -1,6 +1,12 @@
 <#-- ********************************************* -->
 <#-- Displays the topic folder image by its status -->
 <#-- ********************************************* -->
+<#assign totalPages = Request.forumdata.totalPages/>
+<#assign recordsPerPage = Request.forumdata.recordsPerPage/>
+<#assign totalRecords = Request.forumdata.totalRecords/>
+<#assign thisPage = Request.forumdata.thisPage/>
+<#assign start = Request.forumdata.start/>
+
 <#macro folderImage topic>
 	<#if topic.movedId == 0 || (forum?exists && topic.forumId == forum.id)>
 		<#if topic.read>
