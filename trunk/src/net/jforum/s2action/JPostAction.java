@@ -115,18 +115,21 @@ import freemarker.template.SimpleHash;
  */
 public class JPostAction extends JDefaultAction 
 {private static Logger logger = Logger.getLogger(JPostAction.class);
-	String redirect_forumId;
+//	String redirect_forumId;
+	String redirect_topicId;
 	
 
 
 
 
-	public String getRedirect_forumId() {
-		return redirect_forumId;
+
+
+	public String getRedirect_topicId() {
+		return redirect_topicId;
 	}
 
-	public void setRedirect_forumId(String redirect_forumId) {
-		this.redirect_forumId = redirect_forumId;
+	public void setRedirect_topicId(String redirect_topicId) {
+		this.redirect_topicId = redirect_topicId;
 	}
 
 	public JPostAction() {
@@ -506,14 +509,52 @@ public class JPostAction extends JDefaultAction
 		
 		ViewCommon.contextToPagination(start, totalMessages, count);
 	}
+	public String review()
+	{
+    	logger.info("===========>  JPostAction list method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse();
+    	String s = null;
+//    	Writer out = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+				s=doreview(request, response);
+			}else if(s.equalsIgnoreCase(ERROR)){
+				logger.info("list service return error !");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
+//    	name = "Hello, " + name + "!"; 
+        return s;
 
-	public void review()
+	}
+	public String doreview(HttpServletRequest request, HttpServletResponse response)
 	{
 		PostDAO postDao = DataAccessDriver.getInstance().newPostDAO();
 		TopicDAO topicDao = DataAccessDriver.getInstance().newTopicDAO();
 
 		int userId = SessionFacade.getUserSession().getUserId();
-		int topicId = this.request.getIntParameter("topic_id");
+		int topicId = Integer.valueOf( request.getParameter("topic_id"));
 		
 		Topic topic = TopicRepository.getTopic(new Topic(topicId));
 		
@@ -522,7 +563,7 @@ public class JPostAction extends JDefaultAction
 		}
 
 		if (!TopicsCommon.isTopicAccessible(topic.getForumId())) {
-			return;
+			return ERROR;
 		}
 
 		int count = SystemGlobals.getIntValue(ConfigKeys.POSTS_PER_PAGE);
@@ -532,11 +573,14 @@ public class JPostAction extends JDefaultAction
 		List helperList = PostCommon.topicPosts(postDao, false, userId, topic.getId(), start, count);
 		Collections.reverse(helperList);
 
-		this.setTemplateName(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR) + "/empty.htm");
-
-		this.setTemplateName(TemplateKeys.POSTS_REVIEW);
+//		this.setTemplateName(SystemGlobals.getValue(ConfigKeys.TEMPLATE_DIR) + "/empty.htm");
+//
+//		this.setTemplateName(TemplateKeys.POSTS_REVIEW);
 		this.context.put("posts", helperList);
 		this.context.put("users", usersMap);
+		
+		return SUCCESS;
+		
 	}
 
 	private void topicNotFound() {
@@ -560,9 +604,8 @@ public class JPostAction extends JDefaultAction
 		return !SecurityRepository.canAccess(SecurityConstants.PERM_REPLY_ONLY, 
 				Integer.toString(forumId));
 	}
-	
-	public String reply()
-	{
+	public String reply(){
+
 		
 		
 		
@@ -603,9 +646,58 @@ public class JPostAction extends JDefaultAction
         return s;
 		
 		
+	
+	}
+	private String doreply(HttpServletRequest request,
+			HttpServletResponse response) {
+		return doinsertSave(request,response);
 	}
 
-	private String doreply(HttpServletRequest request,
+	public String showReply()
+	{
+		
+		
+		
+    	logger.info("===========>  JPostAction insert method fired  <===========");
+    	HttpServletRequest request = ServletActionContext.getRequest(); 
+    	HttpServletResponse response = ServletActionContext.getResponse();
+    	String s = null;
+//    	Writer out = null;
+    	try {
+//    		forumList();
+			s = service(request, response);
+			if(s.equalsIgnoreCase(SUCCESS)){
+				s = doshowreply(request, response);
+			}else if(s.equalsIgnoreCase(ERROR)){
+				logger.info("list service return error !");
+			}
+			
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ServletException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	finally {
+			try {
+				handleFinally();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				logger.error("error fired in finally block");
+			}
+//			return SUCCESS;
+			
+		}	
+		
+//    	name = "Hello, " + name + "!"; 
+        return s;
+		
+		
+	}
+
+	private String doshowreply(HttpServletRequest request,
 			HttpServletResponse response) {
 		return doInsert(request,response);
 	}
@@ -616,7 +708,7 @@ public class JPostAction extends JDefaultAction
 
 		// If we have a topic_id, then it should be a reply
 		if (request.getParameter("topic_id") != null) {
-			int topicId = this.request.getIntParameter("topic_id");
+			int topicId =Integer.valueOf( request.getParameter("topic_id"));
 			
 			Topic t = TopicRepository.getTopic(new Topic(topicId));
 			
@@ -1422,7 +1514,8 @@ public class JPostAction extends JDefaultAction
 		}
 		
 //		this.redirectUrl = "/forums/show.action?fid="+String.valueOf(forumId);
-		this.redirect_forumId =String.valueOf(forumId);
+//		this.redirect_forumId =String.valueOf(forumId);
+		this.redirect_topicId =String.valueOf(t.getId());
 //		logger.info("after post ,url redirect :"+redirectUrl);
 		
 		
