@@ -3,6 +3,18 @@
 <#assign logModeration = Request.forumdata.moderationLoggingEnabled && Request.forumdata.isEdit?default(false) && Request.forumdata.isModerator && user.id != post.userId/>
 <#assign allowPoll = Request.forumdata.setType?default(true) && Request.forumdata.canCreatePolls?default(false)/>
 
+
+<#if Request.forumdata.start?exists>
+	<#assign start = Request.forumdata.start/>
+</#if>
+<#if Request.forumdata.topic?exists>
+	<#assign topic = Request.forumdata.topic/>
+</#if>
+<#if Request.forumdata.I18n?exists>
+	<#assign I18n = Request.forumdata.I18n/>
+</#if>
+
+
 <script type="text/javascript">
 var CONTEXTPATH = "${Request.forumdata.contextPath}";
 var SERVLET_EXTENSION  = "${Request.forumdata.extension}";
@@ -124,10 +136,10 @@ function smiliePopup()
 							    <#if isEdit>
 							    	${Request.forumdata.I18n.getMessage("PostForm.edit")} "${topic.title?html}"
 							    <#else>
-									<form action="${Request.forumdata.JForumContext.encodeURL("/jforum/post/reply.action")}?fid=${Request.forumdata.forum.id}&topic_id=${topic.id}" method="post" enctype="multipart/form-data" name="post" id="post" onsubmit="return validatePostForm(this)">
+									<form action="${Request.forumdata.JForumContext.encodeURL("/post/reply.action")}?fid=${Request.forumdata.forum.id}&topic_id=${topic.id}" method="post" enctype="multipart/form-data" name="post" id="post" onsubmit="return validatePostForm(this)">
 								</#if>
 							<#else>
-								<form action="${Request.forumdata.JForumContext.encodeURL("/jforum/post/insertSave.action")}?fid=${Request.forumdata.forum.id}" method="post" enctype="multipart/form-data" name="post" id="post" onsubmit="return validatePostForm(this)">
+								<form action="${Request.forumdata.JForumContext.encodeURL("/post/insertSave.action")}?fid=${Request.forumdata.forum.id}" method="post" enctype="multipart/form-data" name="post" id="post" onsubmit="return validatePostForm(this)">
 							</#if>
 						<#else>
 							<#if pmReply?default(false)>
@@ -197,17 +209,17 @@ function smiliePopup()
 					<th class="thhead" colspan="2" height="25">
 						<b>
 						<#if Request.forumdata.forum?exists>
-							<#if (topic?exists && topic.id > -1)>
+							<#if (Request.forumdata.topic?exists && Request.forumdata.topic.id > -1)>
 							    <#if isEdit>
-							    	${Request.forumdata.I18n.getMessage("PostForm.edit")} "${topic.title?html}"
+							    	${Request.forumdata.I18n.getMessage("PostForm.edit")} "${Request.forumdata.topic.title?html}"
 							    <#else>
-									${Request.forumdata.I18n.getMessage("PostForm.reply")} "${topic.title?html}"
+									${Request.forumdata.I18n.getMessage("PostForm.reply")} "${Request.forumdata.topic.title?html}"
 								</#if>
 							<#else>
 								${Request.forumdata.I18n.getMessage("PostForm.title")}
 							</#if>
 						<#else>
-							<#if pmReply?default(false)>
+							<#if Request.forumdata.pmReply?default(false)>
 								${Request.forumdata.I18n.getMessage("PrivateMessage.reply")}
 							<#else>
 								${Request.forumdata.I18n.getMessage("PrivateMessage.title")}
@@ -222,9 +234,9 @@ function smiliePopup()
 						<td class="row1" width="15%"><span class="gen"><b>${Request.forumdata.I18n.getMessage("PrivateMessage.user")}</b></span></td>
 						<td class="row2" width="85%">
 							<#if pmRecipient?exists>
-								<#assign toUsername = toUsername/>
-								<#assign toUserId = toUserId/>
-								<#elseif preview>
+								<#assign toUsername = Request.forumdata.toUsername/>
+								<#assign toUserId = Request.forumdata.toUserId/>
+								<#elseif Request.forumdata.preview>
 								<#assign toUsername = pm.toUser.username/>
 								<#assign toUserId = pm.toUser.id/>
 								<#elseif quote?default("") == "true" || pmReply?default(false)>
@@ -247,6 +259,7 @@ function smiliePopup()
 						<td colspan="2" align="center"><span class="gen"><font color="#ff0000"><b>${Request.forumdata.errorMessage}</b></font></span></td>
 					</tr>
 				</#if>
+
 
 				<tr>
 					<td class="row1" width="15%"><span class="gen"><b>${Request.forumdata.I18n.getMessage("PostForm.subject")}</b></span></td>
@@ -477,7 +490,7 @@ function smiliePopup()
 					<#if pmReply?default(false)>
 						<iframe width="100%" height="300" frameborder="0" src="${Request.forumdata.JForumContext.encodeURL("/jforum${Request.forumdata.extension}?module=pm&amp;action=review&amp;id=${pm.id}", "")}" ></iframe>
 					<#else>
-						<iframe width="100%" height="300" frameborder="0" src="${Request.forumdata.JForumContext.encodeURL("/posts/review/${start}/${topic.id}")}" ></iframe>
+						<iframe width="100%" height="300" frameborder="0" src="${Request.forumdata.JForumContext.encodeURL("/posts/postReview.action?start=&topic_id=${topic.id}")}" ></iframe>
 					</#if>
 				</td>
 			</tr>

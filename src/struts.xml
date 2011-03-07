@@ -18,6 +18,7 @@
 	</package>
 	
 	<package name="post" extends="struts-default">
+	
 		<action name="postList" class="net.jforum.s2action.JPostAction" method="list">
 			<result name="success" type="freemarker" >/templates/default/post_show.ftl</result>
 		</action>
@@ -27,13 +28,18 @@
 		</action>
 		
 		<action name="insertSave" class="net.jforum.s2action.JPostAction" method="insertSave">
-<!--			<result name="success" type="redirect" >${redirectUrl}</result>-->
-			<result name="success" type="redirect" >/forums/show.action?fid=${redirect_forumId}</result>
-			
+<!--			<result name="success" type="redirect" >/forums/show.action?fid=${redirect_forumId}</result>-->
+			<result name="success" type="redirect" >/post/postList.action?topic_id=${redirect_topicId}</result>
 		</action>
 		
-		<action name="reply" class="net.jforum.s2action.JPostAction" method="reply">
+		<action name="showReply" class="net.jforum.s2action.JPostAction" method="showReply">
 			<result name="success" type="freemarker" >/templates/default/post_form.ftl</result>
+		</action>
+		<action name="reply" class="net.jforum.s2action.JPostAction" method="reply">
+			<result name="success" type="redirect" >/post/postList.action?topic_id=${redirect_topicId}</result>
+		</action>
+		<action name="postReview" class="net.jforum.s2action.JPostAction" method="review">
+			<result name="success" type="freemarker" >/templates/default/topic_review.ftl</result>
 		</action>
 		
 		
