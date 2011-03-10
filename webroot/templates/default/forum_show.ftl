@@ -60,7 +60,7 @@
 						</td>
 					</#if>
 
-					<form accept-charset="${Request.forumdata.encoding}" action="${Request.forumdata.JForumContext.encodeURL("/jforum")}" method="get" id="formSearch" name="formSearch">
+					<form accept-charset="${Request.forumdata.encoding}" action="${Request.forumdata.JForumContext.encodeURL("/search/search.action")}" method="get" id="formSearch" name="formSearch">
 					<input type="hidden" name="module" value="search"/>
 					<input type="hidden" name="action" value="search"/>
 					<input type="hidden" name="forum" value="${Request.forumdata.forum.id}">

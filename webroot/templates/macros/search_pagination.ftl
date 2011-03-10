@@ -1,3 +1,12 @@
+
+<#if Request.forumdata.totalRecords?exists>
+	<#assign totalRecords = Request.forumdata.totalRecords/>
+</#if>
+<#if Request.forumdata.recordsPerPage?exists>
+	<#assign recordsPerPage = Request.forumdata.recordsPerPage/>
+</#if>
+
+
 <#function moderationParams>
 	<#assign params = ""/>
 
