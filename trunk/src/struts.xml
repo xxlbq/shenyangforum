@@ -69,6 +69,14 @@
 		</action>
 	</package>
 	
+	
+	
+	<package name="search" extends="struts-default">
+		<action name="search" class="net.jforum.s2action.JSearchAction" method="search">
+			<result name="success" type="freemarker" >/templates/default/search_result.ftl</result>
+		</action>
+
+	</package>
 <!--	-->
 <!--	<package name="tutorial" extends="struts-default">-->
 <!---->
