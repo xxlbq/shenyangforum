@@ -142,7 +142,7 @@ public class LuceneSearch implements NewDocumentAdded
 			this.filterByDateRange(args, criteria);
 			
 			Query query = new QueryParser("", new StandardAnalyzer()).parse(criteria.toString());
-			
+			logger.info("Generated query: " + query);
 			if (logger.isDebugEnabled()) {
 				logger.debug("Generated query: " + query);
 			}
